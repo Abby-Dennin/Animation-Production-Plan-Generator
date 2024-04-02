@@ -61,36 +61,41 @@ const PlanningForm = () => {
     };
 
     return (
-        <div>
-            <form onSubmit={handleSubmit(onSubmit)}>
-                {error && <p className="text-danger">{error}</p>}
-                <p>Generate a Production Plan</p>
-                <div className="mb-3">
-                    <label htmlFor="planName" className="form-label">
-                        What is the name of your production?
-                    </label>
-                    <input
-                        {...register("planName")}
-                        id="planName"
-                        type="text"
-                        className="form-control"
-                    />
+        <div className="container">
+        <div className="row">  
+            <div className="mw-45 col p-2 ">
+                <form onSubmit={handleSubmit(onSubmit)}>
+                    {error && <p className="text-danger">{error}</p>}
+                    <p>Generate a Production Plan</p>
+                    <div className="mb-3">
+                        <label htmlFor="planName" className="form-label">
+                            What is the name of your production?
+                        </label>
+                        <input
+                            {...register("planName")}
+                            id="planName"
+                            type="text"
+                            className="form-control"
+                        />
 
-                    <label htmlFor="daysLeft" className="form-label">
-                        How many days do you have to complete this project?
-                    </label>
-                    <input
-                        {...register("daysLeft")}
-                        id="daysLeft"
-                        type="text"
-                        className="form-control"
-                    />
-                </div>
-                <button className="btn btn-primary mb-3">Generate Plan</button>
-            </form>
-
-            {isLoading && <div className="spinner-border"></div>}
-            {queryResponse}
+                        <label htmlFor="daysLeft" className="form-label">
+                            How many days do you have to complete this project?
+                        </label>
+                        <input
+                            {...register("daysLeft")}
+                            id="daysLeft"
+                            type="text"
+                            className="form-control"
+                        />
+                    </div>
+                    <button className="btn btn-primary mb-3">Generate Plan</button>
+                </form>
+            </div>
+            <div className="mw-45 p-2 col">
+                {isLoading && <div className="spinner-border"></div>}
+                {queryResponse}
+            </div>
+        </div>
         </div>
     );
 };
