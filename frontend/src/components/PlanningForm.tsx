@@ -7,6 +7,8 @@ import {
   createParentalService,
 } from "../services/backend-service";
 
+import Papa from "papaparse";
+
 const schema = z.object({
   planName: z.string(),
   daysLeft: z.string(),
@@ -18,7 +20,7 @@ const formatString = (
     daysLeft: string
 ) => {
     return (
-        "Create an animation production plan for a project called: " +
+        "Create an animation production plan in csv format with the headers: task, task description, start date, end date for a project called: " +
         planName + 
         ", assign dates for each task assuming it is due in: " +
         daysLeft +
@@ -36,6 +38,15 @@ const PlanningForm = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState("");
     const [queryResponse, setQueryResponse] = useState("");
+    
+    // State to store parsed data
+    const [parsedData, setParsedData] = useState([]);
+
+    //State to store table Column name
+    const [tableRows, setTableRows] = useState([]);
+    
+    //State to store the values
+    const [values, setValues] = useState([]);
 
     const onSubmit = (data: FieldValues) => {
         console.log(data);
@@ -52,6 +63,29 @@ const PlanningForm = () => {
             .then((res) => {
                 setQueryResponse(res.data);
                 console.log(res.data);
+                Papa.parse(res.data, {
+                    header: true,
+                    skipEmptyLines: true,
+                    complete: function (results) {
+                      const rowsArray = [];
+                      const valuesArray = [];
+              
+                      // Iterating data to get column name and their values
+                      results.data.map((d) => {
+                        rowsArray.push(Object.keys(d));
+                        valuesArray.push(Object.values(d));
+                      });
+              
+                      // Parsed Data Response in array format
+                      setParsedData(results.data);
+              
+                      // Filtered Column Names
+                      setTableRows(rowsArray[0]);
+              
+                      // Filtered Values
+                      setValues(valuesArray);
+                    },
+                  });
                 setIsLoading(false);
             })
             .catch((err) => {
@@ -93,7 +127,26 @@ const PlanningForm = () => {
             </div>
             <div className="mw-45 p-2 col">
                 {isLoading && <div className="spinner-border"></div>}
-                {queryResponse}
+                <table>
+                    <thead>
+                        <tr>
+                            {tableRows.map((rows, index) => {
+                            return <th key={index}>{rows}</th>;
+                            })}
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {values.map((value, index) => {
+                            return (
+                            <tr key={index}>
+                                {value.map((val, i) => {
+                                return <td key={i}>{val}</td>;
+                                })}
+                            </tr>
+                            );
+                        })}
+                    </tbody>
+                </table>
             </div>
         </div>
         </div>
