@@ -48,6 +48,12 @@ const PlanningForm = () => {
     //State to store the values
     const [values, setValues] = useState([]);
 
+    // default color for header
+    const [headerColor, setHeaderColor] = useState("#000000"); 
+
+    // default color for other cell colors
+    const [cellColor, setCellColor] = useState("#ffffff"); 
+
     const onSubmit = (data: FieldValues) => {
         console.log(data);
         setIsLoading(true);
@@ -95,23 +101,44 @@ const PlanningForm = () => {
     };
 
     const handleExportCSV = () => {
-        const csv = Papa.unparse({
-          fields: tableRows,
-          data: values,
+        const csvRows = [];
+        // Add header row
+        const headerRow = tableRows.map(row => {
+            return `"${row}"`; // Wrap each cell in double quotes
+        }).join(",");
+        csvRows.push(headerRow);
+    
+        // Add data rows
+        values.forEach(row => {
+            const csvRow = row.map((cell, index) => {
+                if (index === 0) {
+                    // First cell, apply header color
+                    return `"${headerColor}:${cell}"`;
+                } else {
+                    // Other cells, apply cell color
+                    return `"${cellColor}:${cell}"`;
+                }
+            }).join(",");
+            csvRows.push(csvRow);
         });
-        const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+    
+        // Combine rows into CSV content
+        const csvContent = csvRows.join("\n");
+    
+        // Download CSV file
+        const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
         const link = document.createElement("a");
         if (link.download !== undefined) {
-          const url = URL.createObjectURL(blob);
-          link.setAttribute("href", url);
-          link.setAttribute("download", "production_plan.csv");
-          document.body.appendChild(link);
-          link.click();
-          document.body.removeChild(link);
+            const url = URL.createObjectURL(blob);
+            link.setAttribute("href", url);
+            link.setAttribute("download", "production_plan.csv");
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
         } else {
-          alert("Your browser does not support downloading files.");
+            alert("Your browser does not support downloading files.");
         }
-      };
+    };
 
     return (
         <div className="container">
@@ -166,9 +193,63 @@ const PlanningForm = () => {
                         })}
                     </tbody>
                 </table>
+
+                <div>
                 <button className="btn btn-success mt-3" onClick={handleExportCSV}>
-                    Export CSV
+                    Export Table
                 </button>
+                </div>
+
+                <div><h2>Preview</h2></div>
+
+                <label htmlFor="headerColor" className="form-label">
+                    Select color for header:
+                </label>
+                <input
+                    type="color"
+                    id="headerColor"
+                    value={headerColor}
+                    onChange={(e) => setHeaderColor(e.target.value)}
+                />
+                <label htmlFor="cellColor" className="form-label">
+                    Select color for cells:
+                </label>
+                <input
+                    type="color"
+                    id="cellColor"
+                    value={cellColor}
+                    onChange={(e) => setCellColor(e.target.value)}
+                />
+
+                <div className="mw-45 p-2 col">
+                    {isLoading && <div className="spinner-border"></div>}
+                    <table>
+                        <thead>
+                        <tr>
+                            {tableRows.map((row, index) => (
+                            <th
+                                key={index}
+                                style={{ color: headerColor, backgroundColor: cellColor }}
+                            >
+                                {row}
+                            </th>
+                            ))}
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {values.map((row, index) => (
+                            <tr key={index}>
+                            {row.map((val, i) => (
+                                <td key={i} style={{ color: cellColor }}>
+                                {val}
+                                </td>
+                            ))}
+                            </tr>
+                        ))}
+                        </tbody>
+                    </table>
+                </div>
+
             </div>
         </div>
         </div>
