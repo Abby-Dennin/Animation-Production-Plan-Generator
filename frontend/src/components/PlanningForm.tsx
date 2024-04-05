@@ -8,6 +8,7 @@ import {
 } from "../services/backend-service";
 
 import Papa from "papaparse";
+import xlsxwriter from 'xlsxwriter';
 
 const schema = z.object({
   planName: z.string(),
@@ -103,17 +104,20 @@ const PlanningForm = () => {
     const handleExportCSV = () => {
         const csvRows = [];
         // Add header row
-        const headerRow = tableRows.map(row => {
+        const headerRow = [...tableRows, "Done"].map(row => {
             return `"${row}"`; // Wrap each cell in double quotes
         }).join(",");
         csvRows.push(headerRow);
     
         // Add data rows
         values.forEach(row => {
-            const csvRow = row.map((cell, index) => {
+            const csvRow = [...row, "No"].map((cell, index) => {
                 if (index === 0) {
                     // First cell, apply header color
-                    return `"${headerColor}:${cell}"`;
+                    return `"${cell}"`;
+                } else if (index === row.length) {
+                    // Last cell, add "Yes/No" for "Done" column
+                    return `"${cell}"`;
                 } else {
                     // Other cells, apply cell color
                     return `"${cellColor}:${cell}"`;
@@ -179,6 +183,7 @@ const PlanningForm = () => {
                             {tableRows.map((rows, index) => {
                             return <th key={index}>{rows}</th>;
                             })}
+                            <th>Done</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -188,6 +193,12 @@ const PlanningForm = () => {
                                 {value.map((val, i) => {
                                 return <td key={i}>{val}</td>;
                                 })}
+                                <td> {/* Render a cell for "Done" */}
+                                    <select>
+                                        <option value="Yes">Yes</option>
+                                        <option value="No">No</option>
+                                    </select>
+                                </td>
                             </tr>
                             );
                         })}
@@ -234,19 +245,27 @@ const PlanningForm = () => {
                                 {row}
                             </th>
                             ))}
+                        <th style={{ color: headerColor, backgroundColor: cellColor }}>Done</th> {/* Add the "Done" column header */}
                         </tr>
                         </thead>
                         <tbody>
-                        {values.map((row, index) => (
-                            <tr key={index}>
-                            {row.map((val, i) => (
-                                <td key={i} style={{ color: cellColor }}>
-                                {val}
+                            {values.map((row, index) => (
+                                <tr key={index}>
+                                {row.map((val, i) => (
+                                    <td key={i} style={{ color: cellColor}}>
+                                    {val}
+                                    </td>
+                                ))}
+                                <td style={{ color: cellColor }}>
+                                    {/* Render a cell for "Done" with a dropdown menu */}
+                                    <select>
+                                    <option value="Yes">Yes</option>
+                                    <option value="No">No</option>
+                                    </select>
                                 </td>
+                                </tr>
                             ))}
-                            </tr>
-                        ))}
-                        </tbody>
+                            </tbody>
                     </table>
                 </div>
 
