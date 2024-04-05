@@ -94,6 +94,25 @@ const PlanningForm = () => {
             });
     };
 
+    const handleExportCSV = () => {
+        const csv = Papa.unparse({
+          fields: tableRows,
+          data: values,
+        });
+        const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+        const link = document.createElement("a");
+        if (link.download !== undefined) {
+          const url = URL.createObjectURL(blob);
+          link.setAttribute("href", url);
+          link.setAttribute("download", "production_plan.csv");
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+        } else {
+          alert("Your browser does not support downloading files.");
+        }
+      };
+
     return (
         <div className="container">
         <div className="row">  
@@ -147,6 +166,9 @@ const PlanningForm = () => {
                         })}
                     </tbody>
                 </table>
+                <button className="btn btn-success mt-3" onClick={handleExportCSV}>
+                    Export CSV
+                </button>
             </div>
         </div>
         </div>
