@@ -11,9 +11,10 @@ interface SavedPlan {
 
 interface Props {
   savedPlans?: SavedPlan[]; // Array of saved plans
+  setSavedPlans: React.Dispatch<React.SetStateAction<SavedPlan[]>>;
 }
 
-const SavedPlans: React.FC<Props> = ({ savedPlans = [] }) => {
+const SavedPlans: React.FC<Props> = ({ savedPlans = [], setSavedPlans }) => {
   const [selectedPlan, setSelectedPlan] = useState<SavedPlan | null>(null);
   const [showDetails, setShowDetails] = useState(false);
 
@@ -91,7 +92,21 @@ const SavedPlans: React.FC<Props> = ({ savedPlans = [] }) => {
     }
 };
 
+const deletePlan = (index: number) => {
+    console.log("size: ", savedPlans.length);
+    const updatedPlans = [...savedPlans];
+    const planToDelete = updatedPlans[index];
+    updatedPlans.splice(index, 1);
+    setSavedPlans(updatedPlans);
+    localStorage.setItem("savedPlans", JSON.stringify(updatedPlans));
+    console.log("size: ", savedPlans.length);
 
+    if (selectedPlan && selectedPlan.planName === planToDelete?.planName) {
+        console.log("same!!: ", savedPlans.length);
+        setShowDetails(false);
+        setSelectedPlan(null);
+    }
+  };
 
   return (
     <div className="container">
@@ -106,6 +121,12 @@ const SavedPlans: React.FC<Props> = ({ savedPlans = [] }) => {
                 {/* Render plan title as a button */}
                 <button className="btn btn-primary mb-3" onClick={() => handleButtonClick(plan)}>
                   {plan.planName}
+                </button>
+                <button
+                  className="btn btn-danger mb-3 ms-2"
+                  onClick={() => deletePlan(index)}
+                >
+                  Delete
                 </button>
               </li>
             ))}

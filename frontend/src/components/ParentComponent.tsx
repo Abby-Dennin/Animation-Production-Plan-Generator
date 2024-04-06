@@ -33,7 +33,7 @@ const ParentComponent = () => {
         setHeaderColor={setParentHeaderColor}
         setCellColor={setParentCellColor}
       />
-      <SavedPlans savedPlans={savedPlans} />
+      <SavedPlans savedPlans={savedPlans} setSavedPlans={setSavedPlans}/>
     </div>
   );
 };
