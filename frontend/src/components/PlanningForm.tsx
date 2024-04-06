@@ -210,37 +210,6 @@ const PlanningForm: React.FC<Props> = ({ onSavePlan, parentHeaderColor, parentCe
                     </form>
                 </div>
                 <div className="mw-45 p-2 col">
-                    {isLoading && <div className="spinner-border"></div>}
-                    <table>
-                        <thead>
-                            <tr>
-                                {tableRows.map((rows, index) => {
-                                return <th key={index}>{rows}</th>;
-                                })}
-                                {formSubmitted && (
-                                    <th>Done</th>
-                                )}
-                            </tr>
-                        </thead>
-                        <tbody>
-                        {values.map((value, index) => {
-                            return (
-                            <tr key={index}>
-                                {value.map((val, i) => {
-                                return <td key={i}>{val}</td>;
-                                })}
-                                <td> {/* Render a cell for "Done" */}
-                                    <input
-                                        type="checkbox"
-                                        checked={false}
-                                    />
-                                </td>
-                            </tr>
-                            );
-                        })}
-                        </tbody>
-                    </table>
-
                     <div>
                     <button className="btn btn-success mt-3" onClick={handleExportCSV}>
                         Export Table
