@@ -1,6 +1,6 @@
 import { FieldValues, useForm } from "react-hook-form";
 import { z } from "zod";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   // Backend model route options
   createResponseService, // Default
@@ -29,6 +29,7 @@ const formatString = (
 }
 
 const PlanningForm = () => {
+    
     const {
         register,
         handleSubmit,
@@ -53,6 +54,8 @@ const PlanningForm = () => {
 
     // default color for other cell colors
     const [cellColor, setCellColor] = useState("#ffffff"); 
+
+    const [formSubmitted, setFormSubmitted] = useState(false);
 
     const onSubmit = (data: FieldValues) => {
         console.log(data);
@@ -93,6 +96,7 @@ const PlanningForm = () => {
                     },
                   });
                 setIsLoading(false);
+                setFormSubmitted(true);
             })
             .catch((err) => {
                 setError(err.message);
@@ -182,7 +186,9 @@ const PlanningForm = () => {
                             {tableRows.map((rows, index) => {
                             return <th key={index}>{rows}</th>;
                             })}
-                            <th>Done</th>
+                            {formSubmitted && (
+                                <th>Done</th>
+                            )}
                         </tr>
                         </thead>
                         <tbody>
@@ -244,7 +250,12 @@ const PlanningForm = () => {
                                 {row}
                             </th>
                             ))}
-                        <th style={{ color: headerColor, backgroundColor: cellColor }}>Done</th> {/* Add the "Done" column header */}
+        
+                            <th style={{ color: headerColor, backgroundColor: cellColor }}>
+                                {formSubmitted && (
+                                    <th>Done</th>
+                                )}
+                            </th> {/* Add the "Done" column header */}
                         </tr>
                         </thead>
                         <tbody>
