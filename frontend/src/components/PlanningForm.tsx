@@ -1,16 +1,19 @@
 import { FieldValues, useForm } from "react-hook-form";
 import { z } from "zod";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import {
-  // Backend model route options
-  createResponseService, // Default
-  createParentalService,
-} from "../services/backend-service";
-
+    // Backend model route options
+    createResponseService, // Default
+    createParentalService,
+  } from "../services/backend-service";
 import Papa from "papaparse";
 
 interface Props {
-    onSavePlan: (plan: any) => void; // Define the onSavePlan prop
+    onSavePlan: (plan: any) => void;
+    parentHeaderColor: string;
+    parentCellColor: string;
+    setHeaderColor: React.Dispatch<React.SetStateAction<string>>;
+    setCellColor: React.Dispatch<React.SetStateAction<string>>;
 }
 
 const schema = z.object({
@@ -32,7 +35,7 @@ const formatString = (
     );
 }
 
-const PlanningForm = ({ onSavePlan }: Props) => {
+const PlanningForm: React.FC<Props> = ({ onSavePlan, parentHeaderColor, parentCellColor, setHeaderColor, setCellColor }) => {
     
     const {
         register,
@@ -52,12 +55,6 @@ const PlanningForm = ({ onSavePlan }: Props) => {
     
     //State to store the values
     const [values, setValues] = useState([]);
-
-    // default color for header
-    const [headerColor, setHeaderColor] = useState("#000000"); 
-
-    // default color for other cell colors
-    const [cellColor, setCellColor] = useState("#ffffff"); 
 
     // has form been submitted (default is false when application launched)
     const [formSubmitted, setFormSubmitted] = useState(false);
@@ -159,58 +156,56 @@ const PlanningForm = ({ onSavePlan }: Props) => {
 
     const handleSavePlan = () => {
         // Add the current plan to the list of saved plans
-        console.log("trying to save");
-        console.log(planName);
         const newPlan = {
           planName: planName, 
           data: values,
         };
         onSavePlan(newPlan); // Call the onSavePlan prop to save the plan
-      };
+    };
 
     return (
         <div className="container">
-        <div className="row">  
-            <div className="mw-45 col p-2 ">
-                <form onSubmit={handleSubmit(onSubmit)}>
-                    {error && <p className="text-danger">{error}</p>}
-                    <p>Generate a Production Plan</p>
-                    <div className="mb-3">
-                        <label htmlFor="planName" className="form-label">
-                            What is the name of your production?
-                        </label>
-                        <input
-                            {...register("planName")}
-                            id="planName"
-                            type="text"
-                            className="form-control"
-                        />
+            <div className="row">  
+                <div className="mw-45 col p-2 ">
+                    <form onSubmit={handleSubmit(onSubmit)}>
+                        {error && <p className="text-danger">{error}</p>}
+                        <p>Generate a Production Plan</p>
+                        <div className="mb-3">
+                            <label htmlFor="planName" className="form-label">
+                                What is the name of your production?
+                            </label>
+                            <input
+                                {...register("planName")}
+                                id="planName"
+                                type="text"
+                                className="form-control"
+                            />
 
-                        <label htmlFor="daysLeft" className="form-label">
-                            How many days do you have to complete this project?
-                        </label>
-                        <input
-                            {...register("daysLeft")}
-                            id="daysLeft"
-                            type="text"
-                            className="form-control"
-                        />
-                    </div>
-                    <button className="btn btn-primary mb-3">Generate Plan</button>
-                </form>
-            </div>
-            <div className="mw-45 p-2 col">
-                {isLoading && <div className="spinner-border"></div>}
-                <table>
-                    <thead>
-                        <tr>
-                            {tableRows.map((rows, index) => {
-                            return <th key={index}>{rows}</th>;
-                            })}
-                            {formSubmitted && (
-                                <th>Done</th>
-                            )}
-                        </tr>
+                            <label htmlFor="daysLeft" className="form-label">
+                                How many days do you have to complete this project?
+                            </label>
+                            <input
+                                {...register("daysLeft")}
+                                id="daysLeft"
+                                type="text"
+                                className="form-control"
+                            />
+                        </div>
+                        <button className="btn btn-primary mb-3">Generate Plan</button>
+                    </form>
+                </div>
+                <div className="mw-45 p-2 col">
+                    {isLoading && <div className="spinner-border"></div>}
+                    <table>
+                        <thead>
+                            <tr>
+                                {tableRows.map((rows, index) => {
+                                return <th key={index}>{rows}</th>;
+                                })}
+                                {formSubmitted && (
+                                    <th>Done</th>
+                                )}
+                            </tr>
                         </thead>
                         <tbody>
                         {values.map((value, index) => {
@@ -228,90 +223,87 @@ const PlanningForm = ({ onSavePlan }: Props) => {
                             </tr>
                             );
                         })}
-                    </tbody>
-                </table>
-
-                <div>
-                <button className="btn btn-success mt-3" onClick={handleExportCSV}>
-                    Export Table
-                </button>
-                </div>
-
-                <div><h2>Preview</h2></div>
-
-                <label htmlFor="headerColor" className="form-label">
-                    Select color for header:
-                </label>
-                <input
-                    type="color"
-                    id="headerColor"
-                    value={headerColor}
-                    onChange={(e) => setHeaderColor(e.target.value)}
-                />
-                <label htmlFor="cellColor" className="form-label">
-                    Select color for cells:
-                </label>
-                <input
-                    type="color"
-                    id="cellColor"
-                    value={cellColor}
-                    onChange={(e) => setCellColor(e.target.value)}
-                />
-
-                <div className="mw-45 p-2 col">
-                    {isLoading && <div className="spinner-border"></div>}
-                    <table>
-                        <thead>
-                        <tr>
-                            {tableRows.map((row, index) => (
-                            <th
-                                key={index}
-                                style={{ color: headerColor, backgroundColor: cellColor }}
-                            >
-                                {row}
-                            </th>
-                            ))}
-        
-                            <th style={{ color: headerColor, backgroundColor: cellColor }}>
-                                {formSubmitted && (
-                                    <th>Done</th>
-                                )}
-                            </th> {/* Add the "Done" column header */}
-                        </tr>
-                        </thead>
-                        <tbody>
-                            {values.map((row, index) => (
-                                <tr key={index}>
-                                {row.map((val, i) => (
-                                    <td key={i} style={{ color: cellColor}}>
-                                    {val}
-                                    </td>
-                                ))}
-                                <td style={{ color: cellColor }}>
-                                    {/* Render a cell for "Done" with a dropdown menu */}
-                                    <select>
-                                    <option value="Yes">Yes</option>
-                                    <option value="No">No</option>
-                                    </select>
-                                </td>
-                                </tr>
-                            ))}
-                            </tbody>
+                        </tbody>
                     </table>
-                </div>
-                {formSubmitted && (
-                <div className="mw-45 p-2 col">
-                    {/* Render the table and save plan button */}
-                    <button className="btn btn-primary" onClick={handleSavePlan}>
-                    Save Plan
+
+                    <div>
+                    <button className="btn btn-success mt-3" onClick={handleExportCSV}>
+                        Export Table
                     </button>
-                </div>
-                )}
-                </div>
-                
+                    </div>
 
+                    <div><h2>Preview</h2></div>
 
-        </div>
+                    <label htmlFor="headerColor" className="form-label">
+                        Select color for header:
+                    </label>
+                    <input
+                        type="color"
+                        id="headerColor"
+                        value={parentHeaderColor}
+                        onChange={(e) => setHeaderColor(e.target.value)}
+                    />
+                    <label htmlFor="cellColor" className="form-label">
+                        Select color for cells:
+                    </label>
+                    <input
+                        type="color"
+                        id="cellColor"
+                        value={parentCellColor}
+                        onChange={(e) => setCellColor(e.target.value)}
+                    />
+
+                    <div className="mw-45 p-2 col">
+                        {isLoading && <div className="spinner-border"></div>}
+                        <table>
+                            <thead>
+                            <tr>
+                                {tableRows.map((row, index) => (
+                                <th
+                                    key={index}
+                                    style={{ color: parentHeaderColor, backgroundColor: parentCellColor }}
+                                >
+                                    {row}
+                                </th>
+                                ))}
+            
+                                <th style={{ color: parentHeaderColor, backgroundColor: parentCellColor }}>
+                                    {formSubmitted && (
+                                        <th>Done</th>
+                                    )}
+                                </th> {/* Add the "Done" column header */}
+                            </tr>
+                            </thead>
+                            <tbody>
+                                {values.map((row, index) => (
+                                    <tr key={index}>
+                                    {row.map((val, i) => (
+                                        <td key={i} style={{ color: parentCellColor }}>
+                                        {val}
+                                        </td>
+                                    ))}
+                                    <td style={{ color: parentCellColor }}>
+                                        {/* Render a cell for "Done" with a dropdown menu */}
+                                        <select>
+                                        <option value="Yes">Yes</option>
+                                        <option value="No">No</option>
+                                        </select>
+                                    </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+                    {formSubmitted && (
+                    <div className="mw-45 p-2 col">
+                        {/* Render the table and save plan button */}
+                        <button className="btn btn-primary" onClick={handleSavePlan}>
+                        Save Plan
+                        </button>
+                    </div>
+                    )}
+                </div>
+            </div>
         </div>
     );
 };
