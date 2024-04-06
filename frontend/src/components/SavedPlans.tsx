@@ -17,6 +17,21 @@ const SavedPlans: React.FC<Props> = ({ savedPlans = [] }) => {
   const [selectedPlan, setSelectedPlan] = useState<SavedPlan | null>(null);
   const [showDetails, setShowDetails] = useState(false);
 
+    useEffect(() => {
+        const savedPlansData = localStorage.getItem("savedPlans");
+        if (savedPlansData) {
+        const parsedSavedPlans: SavedPlan[] = JSON.parse(savedPlansData);
+        // Update the state with the saved plans
+        setSelectedPlan(parsedSavedPlans.find(plan => plan.planName === selectedPlan?.planName) || null);
+        }
+    }, []);
+
+    useEffect(() => {
+        if (selectedPlan) {
+        console.log("Use Effect Task statuses:", selectedPlan.tasks);
+        }
+    }, [selectedPlan]);
+
     // Function to toggle the completion status of a task
     const toggleTask = (index: number) => {
 
@@ -25,6 +40,7 @@ const SavedPlans: React.FC<Props> = ({ savedPlans = [] }) => {
         updatedTasks[index] = !updatedTasks[index];
         planToUpdate.tasks = updatedTasks;
         setSelectedPlan({ ...selectedPlan, tasks: updatedTasks });
+        localStorage.setItem("savedPlans", JSON.stringify(savedPlans));
       };
 
   const handleButtonClick = (plan: SavedPlan) => {
