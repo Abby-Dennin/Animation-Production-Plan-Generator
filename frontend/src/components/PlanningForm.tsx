@@ -8,7 +8,6 @@ import {
 } from "../services/backend-service";
 
 import Papa from "papaparse";
-import xlsxwriter from 'xlsxwriter';
 
 const schema = z.object({
   planName: z.string(),
@@ -120,7 +119,7 @@ const PlanningForm = () => {
                     return `"${cell}"`;
                 } else {
                     // Other cells, apply cell color
-                    return `"${cellColor}:${cell}"`;
+                    return `"${cell}"`;
                 }
             }).join(",");
             csvRows.push(csvRow);
