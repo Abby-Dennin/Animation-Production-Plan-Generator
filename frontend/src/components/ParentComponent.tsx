@@ -4,8 +4,8 @@ import SavedPlans from "./SavedPlans";
 
 const ParentComponent = () => {
   const [savedPlans, setSavedPlans] = useState<any[]>([]);
-  const [headerColor, setHeaderColor] = useState("#000000");
-  const [cellColor, setCellColor] = useState("#ffffff");
+  const [headerColor, setHeaderColor] = useState("#ffffff");
+  const [cellColor, setCellColor] = useState("#000000");
 
   const onSavePlan = (plan: any) => {
     setSavedPlans([...savedPlans, plan]);
