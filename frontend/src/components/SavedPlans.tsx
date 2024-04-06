@@ -1,5 +1,7 @@
 // SavedPlans.tsx
 import React, { useState, useEffect } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTrash } from "@fortawesome/free-solid-svg-icons";
 
 interface SavedPlan {
   planName: string;
@@ -126,7 +128,7 @@ const deletePlan = (index: number) => {
                   className="btn btn-danger mb-3 ms-2"
                   onClick={() => deletePlan(index)}
                 >
-                  Delete
+                  <FontAwesomeIcon icon={faTrash} />
                 </button>
               </li>
             ))}

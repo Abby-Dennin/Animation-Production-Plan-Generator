@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import PlanningForm from "./PlanningForm";
 import SavedPlans from "./SavedPlans";
+import logoImage from "../PPG Logo.png";
 
 const ParentComponent = () => {
   const [savedPlans, setSavedPlans] = useState<any[]>([]);
@@ -26,6 +27,7 @@ const ParentComponent = () => {
 
   return (
     <div>
+        <img src={logoImage} alt="Logo" style={{ width: "100%", marginBottom: "20px" }} />
       <PlanningForm
         onSavePlan={onSavePlan}
         parentHeaderColor={headerColor}
