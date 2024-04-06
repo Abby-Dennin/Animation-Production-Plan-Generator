@@ -230,10 +230,10 @@ const PlanningForm: React.FC<Props> = ({ onSavePlan, parentHeaderColor, parentCe
                                 return <td key={i}>{val}</td>;
                                 })}
                                 <td> {/* Render a cell for "Done" */}
-                                    <select>
-                                        <option value="Yes">Yes</option>
-                                        <option value="No">No</option>
-                                    </select>
+                                    <input
+                                        type="checkbox"
+                                        checked={false}
+                                    />
                                 </td>
                             </tr>
                             );
@@ -304,11 +304,10 @@ const PlanningForm: React.FC<Props> = ({ onSavePlan, parentHeaderColor, parentCe
                                         </td>
                                     ))}
                                     <td style={{ color: cellColor }}>
-                                        {/* Render a cell for "Done" with a dropdown menu */}
-                                        <select>
-                                        <option value="Yes">Yes</option>
-                                        <option value="No">No</option>
-                                        </select>
+                                        <input
+                                            type="checkbox"
+                                            checked={false}
+                                        />
                                     </td>
                                     </tr>
                                 ))}
