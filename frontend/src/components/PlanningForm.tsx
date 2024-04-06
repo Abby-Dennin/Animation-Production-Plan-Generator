@@ -9,6 +9,10 @@ import {
 
 import Papa from "papaparse";
 
+interface Props {
+    onSavePlan: (plan: any) => void; // Define the onSavePlan prop
+}
+
 const schema = z.object({
   planName: z.string(),
   daysLeft: z.string(),
@@ -28,7 +32,7 @@ const formatString = (
     );
 }
 
-const PlanningForm = () => {
+const PlanningForm = ({ onSavePlan }: Props) => {
     
     const {
         register,
@@ -55,7 +59,12 @@ const PlanningForm = () => {
     // default color for other cell colors
     const [cellColor, setCellColor] = useState("#ffffff"); 
 
+    // has form been submitted (default is false when application launched)
     const [formSubmitted, setFormSubmitted] = useState(false);
+
+    const [savedPlans, setSavedPlans] = useState([]);
+
+    const [planName, setPlanName] = useState(""); // State variable to store the plan name
 
     const onSubmit = (data: FieldValues) => {
         console.log(data);
@@ -97,6 +106,7 @@ const PlanningForm = () => {
                   });
                 setIsLoading(false);
                 setFormSubmitted(true);
+                setPlanName(data.planName);
             })
             .catch((err) => {
                 setError(err.message);
@@ -146,6 +156,17 @@ const PlanningForm = () => {
             alert("Your browser does not support downloading files.");
         }
     };
+
+    const handleSavePlan = () => {
+        // Add the current plan to the list of saved plans
+        console.log("trying to save");
+        console.log(planName);
+        const newPlan = {
+          planName: planName, 
+          data: values,
+        };
+        onSavePlan(newPlan); // Call the onSavePlan prop to save the plan
+      };
 
     return (
         <div className="container">
@@ -278,8 +299,18 @@ const PlanningForm = () => {
                             </tbody>
                     </table>
                 </div>
+                {formSubmitted && (
+                <div className="mw-45 p-2 col">
+                    {/* Render the table and save plan button */}
+                    <button className="btn btn-primary" onClick={handleSavePlan}>
+                    Save Plan
+                    </button>
+                </div>
+                )}
+                </div>
+                
 
-            </div>
+
         </div>
         </div>
     );
