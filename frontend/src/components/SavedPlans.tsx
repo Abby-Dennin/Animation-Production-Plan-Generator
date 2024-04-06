@@ -1,5 +1,5 @@
 // SavedPlans.tsx
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 interface SavedPlan {
   planName: string;
@@ -19,21 +19,16 @@ const SavedPlans: React.FC<Props> = ({ savedPlans = [] }) => {
 
     // Function to toggle the completion status of a task
     const toggleTask = (index: number) => {
-        if (selectedPlan.tasks[index]) {
-            selectedPlan.tasks[index] = false;
-            const updatedTasks = [...selectedPlan.tasks]; // Create a copy of the tasks array
-            updatedTasks[index] = false;
-            setSelectedPlan({ ...selectedPlan, tasks: updatedTasks });
-        }
-        else {
-            selectedPlan.tasks[index] = true;
-            const updatedTasks = [...selectedPlan.tasks]; // Create a copy of the tasks array
-            updatedTasks[index] = true;
-            setSelectedPlan({ ...selectedPlan, tasks: updatedTasks });
-        }
+
+        const planToUpdate = savedPlans.find(plan => plan.planName === selectedPlan.planName);
+        const updatedTasks = [...selectedPlan.tasks];
+        updatedTasks[index] = !updatedTasks[index];
+        planToUpdate.tasks = updatedTasks;
+        setSelectedPlan({ ...selectedPlan, tasks: updatedTasks });
       };
 
   const handleButtonClick = (plan: SavedPlan) => {
+    console.log("Task statuses:", plan.tasks);
     if (selectedPlan && selectedPlan.planName === plan.planName) {
       setShowDetails(!showDetails); // Toggle showDetails
     } else {
@@ -83,7 +78,7 @@ const SavedPlans: React.FC<Props> = ({ savedPlans = [] }) => {
                         <input
                           type="checkbox"
                           checked={selectedPlan.tasks[rowIndex]} // Check if task is completed
-                          onChange={() => toggleTask(rowIndex)} // Toggle task completion status
+                          onChange={() => toggleTask(rowIndex) } // Toggle task completion status
                         />
                       </td>
                     </tr>

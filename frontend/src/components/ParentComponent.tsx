@@ -1,5 +1,5 @@
 // ParentComponent.tsx
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import PlanningForm from "./PlanningForm";
 import SavedPlans from "./SavedPlans";
 
@@ -8,8 +8,20 @@ const ParentComponent = () => {
   const [headerColor, setParentHeaderColor] = useState("#ffffff");
   const [cellColor, setParentCellColor] = useState("#000000");
 
-  const onSavePlan = (plan: any) => {
-    setSavedPlans([...savedPlans, plan]);
+  useEffect(() => {
+    // Load saved plans from localStorage when component mounts
+    const storedPlans = localStorage.getItem("savedPlans");
+    if (storedPlans) {
+      setSavedPlans(JSON.parse(storedPlans));
+    }
+  }, []);
+
+  const onSavePlan = (plan: SavedPlan) => {
+    // Add the current plan to the list of saved plans
+    const updatedPlans = [...savedPlans, plan];
+    setSavedPlans(updatedPlans);
+    // Store the updated plans in localStorage
+    localStorage.setItem("savedPlans", JSON.stringify(updatedPlans));
   };
 
   return (
