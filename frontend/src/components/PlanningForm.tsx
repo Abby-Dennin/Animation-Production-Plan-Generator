@@ -141,7 +141,7 @@ const PlanningForm: React.FC<Props> = ({ onSavePlan, parentHeaderColor, parentCe
                 <div className="mw-45 col p-2 ">
                     <form onSubmit={handleSubmit(onSubmit)}>
                         {error && <p className="text-danger">{error}</p>}
-                        <p>Generate a Production Plan</p>
+                        <h3 style={{ color: '#c73c34' }}>Send us your project goals, and we'll do the rest! 😎</h3>
                         <div className="mb-3">
                             <label htmlFor="planName" className="form-label">
                                 What is the name of your production?
@@ -163,7 +163,7 @@ const PlanningForm: React.FC<Props> = ({ onSavePlan, parentHeaderColor, parentCe
                                 className="form-control"
                             />
                         </div>
-                        <button className="btn btn-primary mb-3">Generate Plan</button>
+                        <button className="btn btn-primary mb-3" style={{ backgroundColor: '#c73c34', borderColor: '#ff9900' }} >Generate!</button>
                     </form>
                 </div>
                 <div className="mw-45 p-2 col">
@@ -237,8 +237,8 @@ const PlanningForm: React.FC<Props> = ({ onSavePlan, parentHeaderColor, parentCe
                     {formSubmitted && (
                     <div className="mw-45 p-2 col">
                         {/* Render the table and save plan button */}
-                        <button className="btn btn-primary" onClick={handleSavePlan}>
-                        Save Plan
+                        <button className="btn btn-primary" onClick={handleSavePlan} style={{ backgroundColor: '#c73c34', borderColor: '#ff9900' }}>
+                        SAVE PLAN
                         </button>
                     </div>
                     )}
