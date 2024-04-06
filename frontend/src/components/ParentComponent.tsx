@@ -1,11 +1,12 @@
+// ParentComponent.tsx
 import React, { useState } from "react";
 import PlanningForm from "./PlanningForm";
 import SavedPlans from "./SavedPlans";
 
 const ParentComponent = () => {
   const [savedPlans, setSavedPlans] = useState<any[]>([]);
-  const [headerColor, setHeaderColor] = useState("#ffffff");
-  const [cellColor, setCellColor] = useState("#000000");
+  const [headerColor, setParentHeaderColor] = useState("#ffffff");
+  const [cellColor, setParentCellColor] = useState("#000000");
 
   const onSavePlan = (plan: any) => {
     setSavedPlans([...savedPlans, plan]);
@@ -17,10 +18,10 @@ const ParentComponent = () => {
         onSavePlan={onSavePlan}
         parentHeaderColor={headerColor}
         parentCellColor={cellColor}
-        setHeaderColor={setHeaderColor}
-        setCellColor={setCellColor}
+        setHeaderColor={setParentHeaderColor}
+        setCellColor={setParentCellColor}
       />
-      <SavedPlans savedPlans={savedPlans} parentHeaderColor={headerColor} parentCellColor={cellColor} />
+      <SavedPlans savedPlans={savedPlans} />
     </div>
   );
 };

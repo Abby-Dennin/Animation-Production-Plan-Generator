@@ -4,15 +4,15 @@ import React, { useState } from "react";
 interface SavedPlan {
   planName: string;
   data: any[][];
+  headerColor: string;
+  cellColor: string;
 }
 
 interface Props {
   savedPlans?: SavedPlan[]; // Array of saved plans
-  parentHeaderColor: string; // Header color selected in PlanningForm
-  parentCellColor: string; // Cell color selected in PlanningForm
 }
 
-const SavedPlans: React.FC<Props> = ({ savedPlans = [], parentHeaderColor, parentCellColor }) => {
+const SavedPlans: React.FC<Props> = ({ savedPlans = [] }) => {
   const [selectedPlan, setSelectedPlan] = useState<SavedPlan | null>(null);
   const [showDetails, setShowDetails] = useState(false);
 
@@ -36,7 +36,9 @@ const SavedPlans: React.FC<Props> = ({ savedPlans = [], parentHeaderColor, paren
             {savedPlans.map((plan, index) => (
               <li key={index}>
                 {/* Render plan title as a button */}
-                <button className="btn btn-primary mb-3" onClick={() => handleButtonClick(plan)}>{plan.planName}</button>
+                <button className="btn btn-primary mb-3" onClick={() => handleButtonClick(plan)}>
+                  {plan.planName}
+                </button>
               </li>
             ))}
           </ul>
@@ -47,18 +49,18 @@ const SavedPlans: React.FC<Props> = ({ savedPlans = [], parentHeaderColor, paren
                 <thead>
                   <tr>
                     {selectedPlan.data[0].map((header, index) => (
-                      <th key={index} style={{ color: parentHeaderColor, backgroundColor: parentCellColor }}>{header}</th>
+                      <th key={index} style={{ color: selectedPlan.headerColor, backgroundColor: selectedPlan.cellColor }}>{header}</th>
                     ))}
-                    <th style={{ color: parentHeaderColor, backgroundColor: parentCellColor }}>Done</th> {/* Add "Done" column header */}
+                    <th style={{ color: selectedPlan.headerColor, backgroundColor: selectedPlan.cellColor }}>Done</th> {/* Add "Done" column header */}
                   </tr>
                 </thead>
                 <tbody>
                   {selectedPlan.data.slice(1).map((row, rowIndex) => (
                     <tr key={rowIndex}>
                       {row.map((cell, cellIndex) => (
-                        <td key={cellIndex} style={{ color: parentCellColor }}>{cell}</td>
+                        <td key={cellIndex} style={{ color: selectedPlan.cellColor }}>{cell}</td>
                       ))}
-                      <td style={{ color: parentCellColor }}>
+                      <td style={{ color: selectedPlan.cellColor }}>
                         {/* Render a cell for "Done" with a dropdown menu */}
                         <select>
                           <option value="Yes">Yes</option>
