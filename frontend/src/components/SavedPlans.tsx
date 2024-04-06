@@ -53,6 +53,46 @@ const SavedPlans: React.FC<Props> = ({ savedPlans = [] }) => {
     }
   };
 
+  const handleExportCSV = () => {
+    const csvRows = [];
+    // Add header row
+    const headerRow = [
+        "Task",
+        "Task Description",
+        "Start Date",
+        "End Date",
+        "Done"
+    ].map(cell => `"${cell}"`).join(",");
+    csvRows.push(headerRow);
+
+    // Add data rows
+    selectedPlan.data.slice(0).forEach(row => {
+        const csvRow = row.map(cell => {
+            return `"${cell}"`;
+        }).join(",");
+        csvRows.push(csvRow);
+    });
+
+    // Combine rows into CSV content
+    const csvContent = csvRows.join("\n");
+
+    // Download CSV file
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    const link = document.createElement("a");
+    if (link.download !== undefined) {
+        const url = URL.createObjectURL(blob);
+        link.setAttribute("href", url);
+        link.setAttribute("download", `${selectedPlan.planName}_export.csv`);
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    } else {
+        alert("Your browser does not support downloading files.");
+    }
+};
+
+
+
   return (
     <div className="container">
       <h2>My Plans</h2>
@@ -101,6 +141,12 @@ const SavedPlans: React.FC<Props> = ({ savedPlans = [] }) => {
                   ))}
                 </tbody>
               </table>
+              <button
+                className="btn btn-success"
+                onClick={handleExportCSV}
+              >
+                Export CSV
+              </button>
             </div>
           )}
         </>

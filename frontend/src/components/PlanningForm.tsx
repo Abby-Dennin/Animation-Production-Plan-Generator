@@ -122,49 +122,6 @@ const PlanningForm: React.FC<Props> = ({ onSavePlan, parentHeaderColor, parentCe
             });
     };
 
-    const handleExportCSV = () => {
-        const csvRows = [];
-        // Add header row
-        const headerRow = [...tableRows, "Done"].map(row => {
-            return `"${row}"`; // Wrap each cell in double quotes
-        }).join(",");
-        csvRows.push(headerRow);
-    
-        // Add data rows
-        values.forEach(row => {
-            const csvRow = [...row, "No"].map((cell, index) => {
-                if (index === 0) {
-                    // First cell, apply header color
-                    return `"${cell}"`;
-                } else if (index === row.length) {
-                    // Last cell, add "Yes/No" for "Done" column
-                    return `"${cell}"`;
-                } else {
-                    // Other cells, apply cell color
-                    return `"${cell}"`;
-                }
-            }).join(",");
-            csvRows.push(csvRow);
-        });
-    
-        // Combine rows into CSV content
-        const csvContent = csvRows.join("\n");
-    
-        // Download CSV file
-        const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
-        const link = document.createElement("a");
-        if (link.download !== undefined) {
-            const url = URL.createObjectURL(blob);
-            link.setAttribute("href", url);
-            link.setAttribute("download", "production_plan.csv");
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-        } else {
-            alert("Your browser does not support downloading files.");
-        }
-    };
-
     const handleSavePlan = () => {
         // Add the current plan to the list of saved plans
         const emptyTasksArray: boolean[] = Array(values.length).fill(false);
@@ -210,12 +167,6 @@ const PlanningForm: React.FC<Props> = ({ onSavePlan, parentHeaderColor, parentCe
                     </form>
                 </div>
                 <div className="mw-45 p-2 col">
-                    <div>
-                    <button className="btn btn-success mt-3" onClick={handleExportCSV}>
-                        Export Table
-                    </button>
-                    </div>
-
                     <div><h2>Preview</h2></div>
 
                     <label htmlFor="headerColor" className="form-label">
