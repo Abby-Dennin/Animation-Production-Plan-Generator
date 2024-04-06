@@ -6,6 +6,7 @@ interface SavedPlan {
   data: any[][];
   headerColor: string;
   cellColor: string;
+  tasks: boolean[]; 
 }
 
 interface Props {
@@ -15,6 +16,22 @@ interface Props {
 const SavedPlans: React.FC<Props> = ({ savedPlans = [] }) => {
   const [selectedPlan, setSelectedPlan] = useState<SavedPlan | null>(null);
   const [showDetails, setShowDetails] = useState(false);
+
+    // Function to toggle the completion status of a task
+    const toggleTask = (index: number) => {
+        if (selectedPlan.tasks[index]) {
+            selectedPlan.tasks[index] = false;
+            const updatedTasks = [...selectedPlan.tasks]; // Create a copy of the tasks array
+            updatedTasks[index] = false;
+            setSelectedPlan({ ...selectedPlan, tasks: updatedTasks });
+        }
+        else {
+            selectedPlan.tasks[index] = true;
+            const updatedTasks = [...selectedPlan.tasks]; // Create a copy of the tasks array
+            updatedTasks[index] = true;
+            setSelectedPlan({ ...selectedPlan, tasks: updatedTasks });
+        }
+      };
 
   const handleButtonClick = (plan: SavedPlan) => {
     if (selectedPlan && selectedPlan.planName === plan.planName) {
@@ -61,11 +78,12 @@ const SavedPlans: React.FC<Props> = ({ savedPlans = [] }) => {
                         <td key={cellIndex} style={{ color: selectedPlan.cellColor }}>{cell}</td>
                       ))}
                       <td style={{ color: selectedPlan.cellColor }}>
-                        {/* Render a cell for "Done" with a dropdown menu */}
-                        <select>
-                          <option value="Yes">Yes</option>
-                          <option value="No">No</option>
-                        </select>
+                        {/* Render a cell for task completion with a checkbox */}
+                        <input
+                          type="checkbox"
+                          checked={selectedPlan.tasks[rowIndex]} // Check if task is completed
+                          onChange={() => toggleTask(rowIndex)} // Toggle task completion status
+                        />
                       </td>
                     </tr>
                   ))}

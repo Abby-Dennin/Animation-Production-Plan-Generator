@@ -167,11 +167,13 @@ const PlanningForm: React.FC<Props> = ({ onSavePlan, parentHeaderColor, parentCe
 
     const handleSavePlan = () => {
         // Add the current plan to the list of saved plans
+        const emptyTasksArray: boolean[] = Array(values.length).fill(false);
         const newPlan = {
           planName: planName,
           data: values,
           headerColor: headerColor,
           cellColor: cellColor,
+          tasks: emptyTasksArray,
         };
         onSavePlan(newPlan); // Call the onSavePlan prop to save the plan
       };
