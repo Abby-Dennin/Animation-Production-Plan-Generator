@@ -63,16 +63,17 @@ const SavedPlans: React.FC<Props> = ({ savedPlans = [] }) => {
             <div>
               <h3>{selectedPlan.planName}</h3>
               <table className="table">
-                <thead>
-                  <tr>
-                    {selectedPlan.data[0].map((header, index) => (
-                      <th key={index} style={{ color: selectedPlan.headerColor, backgroundColor: selectedPlan.cellColor }}>{header}</th>
-                    ))}
+              <thead>
+                <tr>
+                    <th style={{ color: selectedPlan.headerColor, backgroundColor: selectedPlan.cellColor }}>Task</th>
+                    <th style={{ color: selectedPlan.headerColor, backgroundColor: selectedPlan.cellColor }}>Task Description</th>
+                    <th style={{ color: selectedPlan.headerColor, backgroundColor: selectedPlan.cellColor }}>Start Date</th>
+                    <th style={{ color: selectedPlan.headerColor, backgroundColor: selectedPlan.cellColor }}>End Date</th>
                     <th style={{ color: selectedPlan.headerColor, backgroundColor: selectedPlan.cellColor }}>Done</th> {/* Add "Done" column header */}
-                  </tr>
+                </tr>
                 </thead>
                 <tbody>
-                  {selectedPlan.data.slice(1).map((row, rowIndex) => (
+                  {selectedPlan.data.slice(0).map((row, rowIndex) => (
                     <tr key={rowIndex}>
                       {row.map((cell, cellIndex) => (
                         <td key={cellIndex} style={{ color: selectedPlan.cellColor }}>{cell}</td>
