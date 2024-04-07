@@ -166,6 +166,7 @@ const deletePlan = (index: number) => {
                             type="checkbox"
                             checked={selectedPlan.tasks[rowIndex]} // Check if task is completed
                             onChange={() => toggleTask(rowIndex) } // Toggle task completion status
+                            style={{ width: '15px', height: '15px' }}
                           />
                         </td>
                       </tr>

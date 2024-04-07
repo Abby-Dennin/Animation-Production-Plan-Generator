@@ -293,6 +293,7 @@ const PlanningForm: React.FC<Props> = ({ onSavePlan, parentHeaderColor, parentCe
                                         <input
                                             type="checkbox"
                                             checked={false}
+                                            style={{ width: '15px', height: '15px' }}
                                         />
                                     </td>
                                     </tr>
