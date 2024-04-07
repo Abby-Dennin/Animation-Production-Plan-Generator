@@ -9,7 +9,8 @@ interface SavedPlan {
   headerTextColor: string;
   cellTextColor: string;
   headerBgColor: string;
-  cellBgColor: string;
+  cellBgColor1: string;
+  cellBgColor2: string;
   tasks: boolean[]; 
 }
 
@@ -21,6 +22,7 @@ interface Props {
 const SavedPlans: React.FC<Props> = ({ savedPlans = [], setSavedPlans }) => {
   const [selectedPlan, setSelectedPlan] = useState<SavedPlan | null>(null);
   const [showDetails, setShowDetails] = useState(false);
+  const [tableWidth, setTableWidth] = useState<number | null>(null);
 
     useEffect(() => {
         const savedPlansData = localStorage.getItem("savedPlans");
@@ -34,6 +36,8 @@ const SavedPlans: React.FC<Props> = ({ savedPlans = [], setSavedPlans }) => {
     useEffect(() => {
         if (selectedPlan) {
         console.log("Use Effect Task statuses:", selectedPlan.tasks);
+        const totalColumnWidth = 700; // Assuming each column has a width of 100px
+        setTableWidth(totalColumnWidth);
         }
     }, [selectedPlan]);
 
@@ -113,68 +117,72 @@ const deletePlan = (index: number) => {
   };
 
   return (
-    <div className="container">
-      <h2>My Plans</h2>
-      {savedPlans.length === 0 ? (
-        <p>No saved plans available.</p>
-      ) : (
-        <>
-          <ul>
-            {savedPlans.map((plan, index) => (
-              <li key={index}>
-                {/* Render plan title as a button */}
-                <button className="btn btn-primary mb-3" onClick={() => handleButtonClick(plan)}>
-                  {plan.planName}
-                </button>
+    <div className="container" style={{ display: 'flex', justifyContent: 'space-between'}}>
+      <div style={{ flex: '1', padding: '20px' }}>
+        <h2 style={{color: '#ffffff'}}>My Plans</h2>
+              <ul>
+                {savedPlans.map((plan, index) => (
+                  <li key={index}>
+                    {/* Render plan title as a button */}
+                    <button className="btn btn-primary mb-3" onClick={() => handleButtonClick(plan)}>
+                      {plan.planName}
+                    </button>
+                    <button
+                      className="btn btn-danger mb-3 ms-2"
+                      onClick={() => deletePlan(index)}
+                    >
+                      <FontAwesomeIcon icon={faTrash} />
+                    </button>
+                  </li>
+                ))}
+              </ul>
+      </div>
+      <div style={{padding: '20px'}}>
+        {savedPlans.length === 0 ? (
+          <p>No saved plans available.</p>
+        ) : (
+          <>
+            {selectedPlan && showDetails && (
+              <div>
+                <h3 style={{color: '#ffffff'}}>{selectedPlan.planName}</h3>
+                <table className="table" style={{ width: tableWidth ? `${tableWidth}px` : 'auto' }}>
+                <thead>
+                  <tr>
+                      <th style={{ color: selectedPlan.headerTextColor, backgroundColor: selectedPlan.headerBgColor }}>Day</th>
+                      <th style={{ color: selectedPlan.headerTextColor, backgroundColor: selectedPlan.headerBgColor }}>Task</th>
+                      <th style={{ color: selectedPlan.headerTextColor, backgroundColor: selectedPlan.headerBgColor }}>Task Description</th>
+                      <th style={{ color: selectedPlan.headerTextColor, backgroundColor: selectedPlan.headerBgColor }}>Done</th> {/* Add "Done" column header */}
+                  </tr>
+                  </thead>
+                  <tbody>
+                    {selectedPlan.data.slice(0).map((row, rowIndex) => (
+                      <tr key={rowIndex}>
+                        {row.map((cell, cellIndex) => (
+                          <td key={cellIndex} style={{ color: selectedPlan.cellTextColor, backgroundColor: selectedPlan.cellBgColor1}}>{cell}</td>
+                        ))}
+                        <td style={{ color: selectedPlan.cellTextColor, backgroundColor: selectedPlan.cellBgColor1}}>
+                          {/* Render a cell for task completion with a checkbox */}
+                          <input
+                            type="checkbox"
+                            checked={selectedPlan.tasks[rowIndex]} // Check if task is completed
+                            onChange={() => toggleTask(rowIndex) } // Toggle task completion status
+                          />
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
                 <button
-                  className="btn btn-danger mb-3 ms-2"
-                  onClick={() => deletePlan(index)}
+                  className="btn btn-success"
+                  onClick={handleExportCSV}
                 >
-                  <FontAwesomeIcon icon={faTrash} />
+                  Export Spreadsheet
                 </button>
-              </li>
-            ))}
-          </ul>
-          {selectedPlan && showDetails && (
-            <div>
-              <h3>{selectedPlan.planName}</h3>
-              <table className="table">
-              <thead>
-                <tr>
-                    <th style={{ color: selectedPlan.headerTextColor, backgroundColor: selectedPlan.headerBgColor }}>Day</th>
-                    <th style={{ color: selectedPlan.headerTextColor, backgroundColor: selectedPlan.headerBgColor }}>Task</th>
-                    <th style={{ color: selectedPlan.headerTextColor, backgroundColor: selectedPlan.headerBgColor }}>Task Description</th>
-                    <th style={{ color: selectedPlan.headerTextColor, backgroundColor: selectedPlan.headerBgColor }}>Done</th> {/* Add "Done" column header */}
-                </tr>
-                </thead>
-                <tbody>
-                  {selectedPlan.data.slice(0).map((row, rowIndex) => (
-                    <tr key={rowIndex}>
-                      {row.map((cell, cellIndex) => (
-                        <td key={cellIndex} style={{ color: selectedPlan.cellTextColor, backgroundColor: selectedPlan.cellBgColor}}>{cell}</td>
-                      ))}
-                      <td style={{ color: selectedPlan.cellTextColor, backgroundColor: selectedPlan.cellBgColor}}>
-                        {/* Render a cell for task completion with a checkbox */}
-                        <input
-                          type="checkbox"
-                          checked={selectedPlan.tasks[rowIndex]} // Check if task is completed
-                          onChange={() => toggleTask(rowIndex) } // Toggle task completion status
-                        />
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-              <button
-                className="btn btn-success"
-                onClick={handleExportCSV}
-              >
-                Export CSV
-              </button>
-            </div>
-          )}
-        </>
-      )}
+              </div>
+            )}
+          </>
+        )}
+      </div>
     </div>
   );
 };
