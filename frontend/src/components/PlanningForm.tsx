@@ -13,8 +13,8 @@ interface Props {
     onSavePlan: (plan: any) => void;
     parentHeaderColor: string;
     parentCellColor: string;
-    setParentHeaderColor: React.Dispatch<React.SetStateAction<string>>;
-    setParentCellColor: React.Dispatch<React.SetStateAction<string>>;
+    setParentHeaderTextColor: React.Dispatch<React.SetStateAction<string>>;
+    setParentCellTextColor: React.Dispatch<React.SetStateAction<string>>;
 }
 
 const currentDate = new Date();
@@ -66,9 +66,9 @@ const PlanningForm: React.FC<Props> = ({ onSavePlan, parentHeaderColor, parentCe
     // has form been submitted (default is false when application launched)
     const [formSubmitted, setFormSubmitted] = useState(false);
 
-    const [headerColor, setHeaderColor] = useState("#ffffff");
+    const [headerTextColor, setHeaderTextColor] = useState("#ffffff");
 
-    const [cellColor, setCellColor] = useState("#000000");
+    const [cellTextColor, setCellTextColor] = useState("#000000");
 
     const [savedPlans, setSavedPlans] = useState([]);
 
@@ -88,8 +88,8 @@ const PlanningForm: React.FC<Props> = ({ onSavePlan, parentHeaderColor, parentCe
         const plan = {
             planName: data.planName,
             daysLeft: data.daysLeft,
-            headerColor,
-            cellColor,
+            headerTextColor,
+            cellTextColor,
           };
 
         request
@@ -135,8 +135,8 @@ const PlanningForm: React.FC<Props> = ({ onSavePlan, parentHeaderColor, parentCe
         const newPlan = {
           planName: planName,
           data: values,
-          headerColor: headerColor,
-          cellColor: cellColor,
+          headerTextColor: headerTextColor,
+          cellTextColor: cellTextColor,
           tasks: emptyTasksArray,
         };
         onSavePlan(newPlan); // Call the onSavePlan prop to save the plan
@@ -175,31 +175,36 @@ const PlanningForm: React.FC<Props> = ({ onSavePlan, parentHeaderColor, parentCe
                 </div>
                 <div className="mw-45 p-2 col">
                     <div><h2>Preview</h2></div>
-
-                    <label htmlFor="headerColor" className="form-label">
-                        Select color for header:
-                    </label>
+                    <div>
                     <input
                         type="color"
                         id="headerColor"
-                        value={headerColor}
+                        value={headerTextColor}
                         onChange={(e) => {
-                            setHeaderColor(e.target.value);
-                            setParentHeaderColor(e.target.value);
+                            setHeaderTextColor(e.target.value);
+                            setParentHeaderTextColor(e.target.value);
                         }}
                     />
-                    <label htmlFor="cellColor" className="form-label">
-                        Select color for cells:
+                    <label htmlFor="headerColor" className="form-label">
+                        Select text color for header
                     </label>
+                    </div>
+                    
+                    <div>
                     <input
                         type="color"
                         id="cellColor"
-                        value={cellColor}
+                        value={cellTextColor}
                         onChange={(e) => {
-                            setCellColor(e.target.value)
+                            setCellTextColor(e.target.value)
                             setParentCellColor(e.target.value);
                         }}
                     />
+                    <label htmlFor="cellColor" className="form-label">
+                        Select text color for cells:
+                    </label>
+                    </div>
+                    
 
                     <div className="mw-45 p-2 col">
                         {isLoading && <div className="spinner-border"></div>}
@@ -209,13 +214,13 @@ const PlanningForm: React.FC<Props> = ({ onSavePlan, parentHeaderColor, parentCe
                                 {tableRows.map((row, index) => (
                                 <th
                                     key={index}
-                                    style={{ color: headerColor, backgroundColor: cellColor }}
+                                    style={{ color: headerTextColor, backgroundColor: cellTextColor }}
                                 >
                                     {row}
                                 </th>
                                 ))}
             
-                                <th style={{ color: headerColor, backgroundColor: cellColor }}>
+                                <th style={{ color: headerTextColor, backgroundColor: cellTextColor }}>
                                     {formSubmitted && (
                                         <th>Done</th>
                                     )}
@@ -226,11 +231,11 @@ const PlanningForm: React.FC<Props> = ({ onSavePlan, parentHeaderColor, parentCe
                                 {values.map((row, index) => (
                                     <tr key={index}>
                                     {row.map((val, i) => (
-                                        <td key={i} style={{ color: cellColor }}>
+                                        <td key={i} style={{ color: cellTextColor }}>
                                         {val}
                                         </td>
                                     ))}
-                                    <td style={{ color: cellColor }}>
+                                    <td style={{ color: cellTextColor }}>
                                         <input
                                             type="checkbox"
                                             checked={false}

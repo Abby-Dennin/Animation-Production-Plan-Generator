@@ -6,8 +6,8 @@ import logoImage from "../PPG Logo.png";
 
 const ParentComponent = () => {
   const [savedPlans, setSavedPlans] = useState<any[]>([]);
-  const [headerColor, setParentHeaderColor] = useState("#ffffff");
-  const [cellColor, setParentCellColor] = useState("#000000");
+  const [headerTextColor, setParentHeaderTextColor] = useState("#ffffff");
+  const [cellTextColor, setParentCellTextColor] = useState("#000000");
 
   useEffect(() => {
     // Load saved plans from localStorage when component mounts
@@ -30,10 +30,10 @@ const ParentComponent = () => {
         <img src={logoImage} alt="Logo" style={{ width: "100%", marginBottom: "20px" }} />
       <PlanningForm
         onSavePlan={onSavePlan}
-        parentHeaderColor={headerColor}
-        parentCellColor={cellColor}
-        setHeaderColor={setParentHeaderColor}
-        setCellColor={setParentCellColor}
+        parentHeaderColor={headerTextColor}
+        parentCellColor={cellTextColor}
+        setHeaderTextColor={setParentHeaderTextColor}
+        setCellTextColor={setParentCellTextColor}
       />
       <SavedPlans savedPlans={savedPlans} setSavedPlans={setSavedPlans}/>
     </div>

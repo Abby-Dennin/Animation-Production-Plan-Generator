@@ -6,8 +6,8 @@ import { faTrash } from "@fortawesome/free-solid-svg-icons";
 interface SavedPlan {
   planName: string;
   data: any[][];
-  headerColor: string;
-  cellColor: string;
+  headerTextColor: string;
+  cellTextColor: string;
   tasks: boolean[]; 
 }
 
@@ -139,19 +139,19 @@ const deletePlan = (index: number) => {
               <table className="table">
               <thead>
                 <tr>
-                    <th style={{ color: selectedPlan.headerColor, backgroundColor: selectedPlan.cellColor }}>Day</th>
-                    <th style={{ color: selectedPlan.headerColor, backgroundColor: selectedPlan.cellColor }}>Task</th>
-                    <th style={{ color: selectedPlan.headerColor, backgroundColor: selectedPlan.cellColor }}>Task Description</th>
-                    <th style={{ color: selectedPlan.headerColor, backgroundColor: selectedPlan.cellColor }}>Done</th> {/* Add "Done" column header */}
+                    <th style={{ color: selectedPlan.headerTextColor, backgroundColor: selectedPlan.cellTextColor }}>Day</th>
+                    <th style={{ color: selectedPlan.headerTextColor, backgroundColor: selectedPlan.cellTextColor }}>Task</th>
+                    <th style={{ color: selectedPlan.headerTextColor, backgroundColor: selectedPlan.cellTextColor }}>Task Description</th>
+                    <th style={{ color: selectedPlan.headerTextColor, backgroundColor: selectedPlan.cellTextColor }}>Done</th> {/* Add "Done" column header */}
                 </tr>
                 </thead>
                 <tbody>
                   {selectedPlan.data.slice(0).map((row, rowIndex) => (
                     <tr key={rowIndex}>
                       {row.map((cell, cellIndex) => (
-                        <td key={cellIndex} style={{ color: selectedPlan.cellColor }}>{cell}</td>
+                        <td key={cellIndex} style={{ color: selectedPlan.cellTextColor }}>{cell}</td>
                       ))}
-                      <td style={{ color: selectedPlan.cellColor }}>
+                      <td style={{ color: selectedPlan.cellTextColor }}>
                         {/* Render a cell for task completion with a checkbox */}
                         <input
                           type="checkbox"
