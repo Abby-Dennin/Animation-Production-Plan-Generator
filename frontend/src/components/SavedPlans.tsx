@@ -60,10 +60,9 @@ const SavedPlans: React.FC<Props> = ({ savedPlans = [], setSavedPlans }) => {
     const csvRows = [];
     // Add header row
     const headerRow = [
+        "Day",
         "Task",
         "Task Description",
-        "Start Date",
-        "End Date",
         "Done"
     ].map(cell => `"${cell}"`).join(",");
     csvRows.push(headerRow);
@@ -139,10 +138,9 @@ const deletePlan = (index: number) => {
               <table className="table">
               <thead>
                 <tr>
+                    <th style={{ color: selectedPlan.headerColor, backgroundColor: selectedPlan.cellColor }}>Day</th>
                     <th style={{ color: selectedPlan.headerColor, backgroundColor: selectedPlan.cellColor }}>Task</th>
                     <th style={{ color: selectedPlan.headerColor, backgroundColor: selectedPlan.cellColor }}>Task Description</th>
-                    <th style={{ color: selectedPlan.headerColor, backgroundColor: selectedPlan.cellColor }}>Start Date</th>
-                    <th style={{ color: selectedPlan.headerColor, backgroundColor: selectedPlan.cellColor }}>End Date</th>
                     <th style={{ color: selectedPlan.headerColor, backgroundColor: selectedPlan.cellColor }}>Done</th> {/* Add "Done" column header */}
                 </tr>
                 </thead>

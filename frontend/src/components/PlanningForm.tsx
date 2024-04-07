@@ -7,6 +7,7 @@ import {
     createParentalService,
   } from "../services/backend-service";
 import Papa from "papaparse";
+import { format } from 'date-fns';
 
 interface Props {
     onSavePlan: (plan: any) => void;
@@ -16,22 +17,28 @@ interface Props {
     setParentCellColor: React.Dispatch<React.SetStateAction<string>>;
 }
 
+const currentDate = new Date();
+const formattedDate = format(currentDate, 'MM/dd');
+
 const schema = z.object({
   planName: z.string(),
   daysLeft: z.string(),
+  startDate: z.string(),
 });
 type FormData = z.infer<typeof schema>;
 
 const formatString = (
     planName: string,
-    daysLeft: string
+    daysLeft: string,
 ) => {
     return (
-        "Create an animation production plan in csv format with the headers: task, task description, start date, end date for a project called: " +
+        "Create an animation production plan in csv format with the headers: day, task, task description, for a project called: " +
         planName + 
         ", assign dates for each task assuming it is due in: " +
         daysLeft +
-        " days."
+        " days." + 
+        "days must be output as dates in mm/dd format, assuming that the first date is " + formattedDate + 
+        " and a day can have multiple tasks"
     );
 }
 
