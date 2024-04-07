@@ -8,6 +8,8 @@ const ParentComponent = () => {
   const [savedPlans, setSavedPlans] = useState<any[]>([]);
   const [headerTextColor, setParentHeaderTextColor] = useState("#ffffff");
   const [cellTextColor, setParentCellTextColor] = useState("#000000");
+  const [headerBgColor, setParentHeaderBgColor] = useState("#000000");
+  const [cellBgColor, setParentCellBgColor] = useState("#ffffff");
 
   useEffect(() => {
     // Load saved plans from localStorage when component mounts
@@ -34,6 +36,8 @@ const ParentComponent = () => {
         parentCellColor={cellTextColor}
         setHeaderTextColor={setParentHeaderTextColor}
         setCellTextColor={setParentCellTextColor}
+        setHeaderBgColor={setParentHeaderBgColor}
+        setCellBgColor={setParentCellBgColor}
       />
       <SavedPlans savedPlans={savedPlans} setSavedPlans={setSavedPlans}/>
     </div>
