@@ -68,11 +68,11 @@ const SavedPlans: React.FC<Props> = ({ savedPlans = [], setSavedPlans }) => {
     csvRows.push(headerRow);
 
     // Add data rows
-    selectedPlan.data.slice(0).forEach(row => {
-        const csvRow = row.map(cell => {
-            return `"${cell}"`;
-        }).join(",");
-        csvRows.push(csvRow);
+    selectedPlan.data.forEach((row, rowIndex) => {
+        const csvRow = row.map(cell => `"${cell}"`).join(",");
+        const taskStatus = selectedPlan.tasks[rowIndex] ? "Yes" : "No"; // Convert task status to "Yes" or "No"
+        const csvRowWithStatus = `${csvRow},"${taskStatus}"`; // Append task status to the row
+        csvRows.push(csvRowWithStatus);
     });
 
     // Combine rows into CSV content
@@ -92,6 +92,7 @@ const SavedPlans: React.FC<Props> = ({ savedPlans = [], setSavedPlans }) => {
         alert("Your browser does not support downloading files.");
     }
 };
+
 
 const deletePlan = (index: number) => {
     console.log("size: ", savedPlans.length);
