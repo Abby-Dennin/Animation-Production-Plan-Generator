@@ -8,6 +8,7 @@ import {
   } from "../services/backend-service";
 import Papa from "papaparse";
 import { format } from 'date-fns';
+import { start } from "repl";
 
 interface Props {
     onSavePlan: (plan: any) => void;
@@ -25,22 +26,24 @@ const formattedDate = format(currentDate, 'MM/dd');
 
 const schema = z.object({
   planName: z.string(),
-  daysLeft: z.string(),
   startDate: z.string(),
+  endDate: z.string(),
+  daysLeft: z.string(),
 });
 type FormData = z.infer<typeof schema>;
 
 const formatString = (
     planName: string,
     daysLeft: string,
+    startDate: string,
+    endDate: string,
 ) => {
     return (
         "Create an animation production plan in csv format with the headers: day, task, task description, for a project called: " +
         planName + 
-        ", assign dates for each task assuming it is due in: " +
-        daysLeft +
-        " days." + 
-        "days must be output as dates in mm/dd format, assuming that the first date is " + formattedDate + 
+        ", assign dates for each task assuming the project is starting on " + startDate + 
+        " and is ending on " + endDate + "." +
+        "days must be output as dates in mm/dd format" + 
         " and a day can have multiple tasks"
     );
 }
@@ -94,7 +97,7 @@ const PlanningForm: React.FC<Props> = ({ onSavePlan, parentHeaderColor, parentCe
         const {request, cancel } = createResponseService().post([
             {
                 role: "user",
-                content: formatString(data.planName, data.daysLeft),
+                content: formatString(data.planName, data.daysLeft, data.startDate, data.endDate),
             },
         ]);
 
@@ -219,12 +222,22 @@ const PlanningForm: React.FC<Props> = ({ onSavePlan, parentHeaderColor, parentCe
                                 className="form-control"
                             />
 
-                            <label htmlFor="daysLeft" className="form-label">
-                                How many days do you have to complete this project?
+                            <label htmlFor="startDate" className="form-label">
+                                What is your project start date?
                             </label>
                             <input
-                                {...register("daysLeft")}
-                                id="daysLeft"
+                                {...register("startDate")}
+                                id="startDate"
+                                type="text"
+                                className="form-control"
+                            />
+
+                            <label htmlFor="endDate" className="form-label">
+                                What is your project end date?
+                            </label>
+                            <input
+                                {...register("endDate")}
+                                id="endDate"
                                 type="text"
                                 className="form-control"
                             />
