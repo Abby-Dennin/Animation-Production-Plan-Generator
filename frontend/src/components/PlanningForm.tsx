@@ -37,11 +37,11 @@ const formatString = (
     moreInfo: string,
 ) => {
     return (
-        "Create an animation production plan in csv format with the headers: day, task, task description, for a project called: " +
+        "Create an animation production plan in csv format with the headers: week, day, task, task description, for a project called: " +
         planName + 
         ", assign dates for each task assuming the project is starting on " + startDate + 
         " and is ending on " + endDate + "." +
-        "days must be output as dates in mm/dd format" + 
+        "week must be output as numbers. days must be output as dates in mm/dd format" + 
         " and a day can have multiple tasks. Keep " + moreInfo + "in mind"
     );
 }
@@ -161,10 +161,10 @@ const PlanningForm: React.FC<Props> = ({ onSavePlan, parentHeaderColor, parentCe
 
       const renderPreviewTable = () => {
         // Example default values
-        const defaultTableRows = ["day", "task", "task description","done"];
+        const defaultTableRows = ["week", "day", "task", "task description","done"];
         const defaultValues = [
-          ["Monday", "Task 1", "Description 1"],
-          ["Tuesday", "Task 2", "Description 2"],
+          ["1", "04/07", "Task 1", "Description 1"],
+          ["2", "04/13", "Task 2", "Description 2"],
         ];
       
         return (
