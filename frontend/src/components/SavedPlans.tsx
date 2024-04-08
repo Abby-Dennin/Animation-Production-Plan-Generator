@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faTrashCan } from "@fortawesome/free-solid-svg-icons";
 
 interface SavedPlan {
   planName: string;
@@ -120,18 +121,19 @@ const deletePlan = (index: number) => {
     <div className="container" style={{ display: 'flex', justifyContent: 'space-between'}}>
       <div style={{ flex: '1', padding: '20px' }}>
         <h2 style={{color: '#ffffff'}}>My Plans</h2>
-              <ul>
+              <ul  style={{color: '#ffffff'}}>
                 {savedPlans.map((plan, index) => (
                   <li key={index}>
                     {/* Render plan title as a button */}
-                    <button className="btn btn-primary mb-3" onClick={() => handleButtonClick(plan)}>
+                    <button className="btn btn-primary mb-3" onClick={() => handleButtonClick(plan)} style={{ backgroundColor: '#ff9900', borderColor: '#c73c34' }}>
                       {plan.planName}
                     </button>
                     <button
                       className="btn btn-danger mb-3 ms-2"
                       onClick={() => deletePlan(index)}
-                    >
-                      <FontAwesomeIcon icon={faTrash} />
+                      style={{backgroundColor: 'transparent',border: '1px solid white'}}
+                    > 
+                       <FontAwesomeIcon icon={faTrashCan}  style={{ color: '#ffffff'}}/>
                     </button>
                   </li>
                 ))}
@@ -176,6 +178,7 @@ const deletePlan = (index: number) => {
                 <button
                   className="btn btn-success"
                   onClick={handleExportCSV}
+                  style={{ backgroundColor: '#ff9900', borderColor: '#c73c34' }}
                 >
                   Export Spreadsheet
                 </button>
