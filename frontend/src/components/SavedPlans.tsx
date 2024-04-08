@@ -173,7 +173,16 @@ const deletePlan = (index: number) => {
           <>
             {selectedPlan && showDetails && (
               <div>
-                <div style={{paddingBottom:'20px'}}>
+
+                <button
+                  className="btn btn-success"
+                  onClick={handleExportCSV}
+                  style={{ backgroundColor: '#ff9900', borderColor: '#c73c34'}}
+                >
+                  Export Spreadsheet
+                </button>
+
+                <div style={{paddingBottom:'20px', paddingTop:}}>
                   Your Progress:
                 <div className="progress">
                   <div
@@ -188,7 +197,10 @@ const deletePlan = (index: number) => {
                     </div>
                   </div>
                 </div>
+                
+                
                 <h4 style={{color: '#ffffff', fontFamily: 'Arial Black', fontWeight: 'bold'}}>{selectedPlan.planName}</h4>
+                
                 <table className="table" style={{ width: tableWidth ? `${tableWidth}px` : 'auto' }}>
                 <thead>
                   <tr>
@@ -218,13 +230,7 @@ const deletePlan = (index: number) => {
                     ))}
                   </tbody>
                 </table>
-                <button
-                  className="btn btn-success"
-                  onClick={handleExportCSV}
-                  style={{ backgroundColor: '#ff9900', borderColor: '#c73c34' }}
-                >
-                  Export Spreadsheet
-                </button>
+                
               </div>
             )}
           </>
