@@ -7,7 +7,6 @@ import {
     createParentalService,
   } from "../services/backend-service";
 import Papa from "papaparse";
-import { format } from 'date-fns';
 import { start } from "repl";
 
 interface Props {
@@ -22,21 +21,20 @@ interface Props {
 }
 
 const currentDate = new Date();
-const formattedDate = format(currentDate, 'MM/dd');
 
 const schema = z.object({
   planName: z.string(),
   startDate: z.string(),
   endDate: z.string(),
-  daysLeft: z.string(),
+  moreInfo: z.string(),
 });
 type FormData = z.infer<typeof schema>;
 
 const formatString = (
     planName: string,
-    daysLeft: string,
     startDate: string,
     endDate: string,
+    moreInfo: string,
 ) => {
     return (
         "Create an animation production plan in csv format with the headers: day, task, task description, for a project called: " +
@@ -44,7 +42,7 @@ const formatString = (
         ", assign dates for each task assuming the project is starting on " + startDate + 
         " and is ending on " + endDate + "." +
         "days must be output as dates in mm/dd format" + 
-        " and a day can have multiple tasks"
+        " and a day can have multiple tasks. Keep " + moreInfo + "in mind"
     );
 }
 
@@ -97,7 +95,7 @@ const PlanningForm: React.FC<Props> = ({ onSavePlan, parentHeaderColor, parentCe
         const {request, cancel } = createResponseService().post([
             {
                 role: "user",
-                content: formatString(data.planName, data.daysLeft, data.startDate, data.endDate),
+                content: formatString(data.planName, data.startDate, data.endDate, data.moreInfo),
             },
         ]);
 
@@ -238,6 +236,16 @@ const PlanningForm: React.FC<Props> = ({ onSavePlan, parentHeaderColor, parentCe
                             <input
                                 {...register("endDate")}
                                 id="endDate"
+                                type="text"
+                                className="form-control"
+                            />
+
+                            <label htmlFor="moreInfo" className="form-label">
+                                More information about your project:
+                            </label>
+                            <input
+                                {...register("moreInfo")}
+                                id="moreInfo"
                                 type="text"
                                 className="form-control"
                             />
