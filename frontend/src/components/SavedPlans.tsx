@@ -118,6 +118,14 @@ const deletePlan = (index: number) => {
     }
   };
 
+  const getCellBgColor2 = (rowValues:string[]) => {
+    console.log("cellBgColor1: ", cellBgColor1);
+    console.log("cellBgColor2: ", cellBgColor2);
+    const week = parseInt(rowValues[0], 10); 
+    console.log("week: ", week);
+    return (week % 2 === 0) ? selectedPlan.cellBgColor2 : selectedPlan.cellBgColor1;
+  };
+
   return (
     <div className="container" style={{ display: 'flex', justifyContent: 'space-between'}}>
       <div style={{ flex: '1', padding: '20px' }}>
@@ -162,9 +170,9 @@ const deletePlan = (index: number) => {
                     {selectedPlan.data.slice(0).map((row, rowIndex) => (
                       <tr key={rowIndex}>
                         {row.map((cell, cellIndex) => (
-                          <td key={cellIndex} style={{ color: selectedPlan.cellTextColor, backgroundColor: selectedPlan.cellBgColor1}}>{cell}</td>
+                          <td key={cellIndex} style={{ color: selectedPlan.cellTextColor, backgroundColor: getCellBgColor2(row)}}>{cell}</td>
                         ))}
-                        <td style={{ color: selectedPlan.cellTextColor, backgroundColor: selectedPlan.cellBgColor1}}>
+                        <td style={{ color: selectedPlan.cellTextColor, backgroundColor: getCellBgColor2(row)}}>
                           {/* Render a cell for task completion with a checkbox */}
                           <input
                             type="checkbox"

@@ -82,10 +82,6 @@ const PlanningForm: React.FC<Props> = ({ onSavePlan, parentHeaderColor, parentCe
 
     const [savedPlans, setSavedPlans] = useState([]);
 
-    const[switchWeek, setSwitchedWeek] = useState(false); // false = cellBgColor1, true = cellBgColor2
-
-    const[currentDay, setCurrentDay] = useState();
-
     const [planName, setPlanName] = useState(""); // State variable to store the plan name
 
     const onSubmit = (data: FieldValues) => {
@@ -200,7 +196,12 @@ const PlanningForm: React.FC<Props> = ({ onSavePlan, parentHeaderColor, parentCe
           </div>
         );
       };
-      
+    
+    const getCellBgColor = (rowValues:string[]) => {
+        const week = parseInt(rowValues[0], 10); 
+
+        return (week % 2 === 0) ? cellBgColor2 : cellBgColor1;
+    };
 
     return (
         <div className="container">
@@ -274,7 +275,7 @@ const PlanningForm: React.FC<Props> = ({ onSavePlan, parentHeaderColor, parentCe
                     <input
                         type="color"
                         id="headerBgColor"
-                        value={headerTextColor}
+                        value={headerBgColor}
                         onChange={(e) => {
                             setHeaderBgColor(e.target.value);
                             setParentHeaderBgColor(e.target.value);
@@ -304,7 +305,7 @@ const PlanningForm: React.FC<Props> = ({ onSavePlan, parentHeaderColor, parentCe
                     <input
                         type="color"
                         id="cellBgColor1"
-                        value={headerTextColor}
+                        value={cellBgColor1}
                         onChange={(e) => {
                             setCellBgColor1(e.target.value);
                             setParentCellBgColor1(e.target.value);
@@ -313,7 +314,7 @@ const PlanningForm: React.FC<Props> = ({ onSavePlan, parentHeaderColor, parentCe
                     <input
                         type="color"
                         id="cellBgColor2"
-                        value={headerTextColor}
+                        value={cellBgColor2}
                         onChange={(e) => {
                             setCellBgColor2(e.target.value);
                             setParentCellBgColor2(e.target.value);
@@ -355,11 +356,11 @@ const PlanningForm: React.FC<Props> = ({ onSavePlan, parentHeaderColor, parentCe
                                 {values.map((row, index) => (
                                     <tr key={index}>
                                     {row.map((val, i) => (
-                                        <td key={i} style={{ color: cellTextColor, backgroundColor: cellBgColor1 }}>
+                                        <td key={i} style={{ color: cellTextColor, backgroundColor: getCellBgColor(row) }}>
                                         {val}
                                         </td>
                                     ))}
-                                    <td style={{ color: cellTextColor, backgroundColor: cellBgColor1 }}>
+                                    <td style={{ color: cellTextColor, backgroundColor: getCellBgColor(row) }}>
                                         <input
                                             type="checkbox"
                                             checked={false}
