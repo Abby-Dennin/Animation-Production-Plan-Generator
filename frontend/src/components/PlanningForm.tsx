@@ -158,6 +158,49 @@ const PlanningForm: React.FC<Props> = ({ onSavePlan, parentHeaderColor, parentCe
         onSavePlan(newPlan); // Call the onSavePlan prop to save the plan
       };
 
+      const renderPreviewTable = () => {
+        // Example default values
+        const defaultTableRows = ["day", "task", "task description","done"];
+        const defaultValues = [
+          ["Monday", "Task 1", "Description 1"],
+          ["Tuesday", "Task 2", "Description 2"],
+        ];
+      
+        return (
+          <div className="mw-45 p-2 col">
+            <table style={{ width: '100%' }}>
+              <thead>
+                <tr>
+                  {defaultTableRows.map((row, index) => (
+                    <th key={index} style={{ color: headerTextColor, backgroundColor: headerBgColor }}>
+                      {row}
+                    </th>
+                  ))}
+                  <th style={{ color: headerTextColor, backgroundColor: headerBgColor }}>
+                    {formSubmitted && <th>Done</th>}
+                  </th> {/* Add the "Done" column header */}
+                </tr>
+              </thead>
+              <tbody>
+                {defaultValues.map((row, index) => (
+                  <tr key={index}>
+                    {row.map((val, i) => (
+                      <td key={i} style={{ color: cellTextColor, backgroundColor: cellBgColor1 }}>
+                        {val}
+                      </td>
+                    ))}
+                    <td style={{ color: cellTextColor, backgroundColor: cellBgColor1 }}>
+                      <input type="checkbox" checked={false} style={{ width: '15px', height: '15px' }} />
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        );
+      };
+      
+
     return (
         <div className="container">
             <div className="row">  
@@ -259,6 +302,12 @@ const PlanningForm: React.FC<Props> = ({ onSavePlan, parentHeaderColor, parentCe
                         Select background color for cells
                     </label>
                     </div>
+
+                    {!formSubmitted && (
+                        <div className="mw-45 p-2 col">
+                        {renderPreviewTable()}
+                        </div>
+                    )}
 
                     <div className="mw-45 p-2 col">
                         {isLoading && <div className="spinner-border"></div>}
