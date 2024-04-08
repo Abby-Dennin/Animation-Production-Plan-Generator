@@ -255,7 +255,9 @@ const PlanningForm: React.FC<Props> = ({ onSavePlan, parentHeaderColor, parentCe
                     </form>
                 </div>
                 <div className="mw-45 p-2 col">
-                    <div><h2>Preview</h2></div>
+                <div>
+                    <h2 style={{ fontFamily: 'Arial Black', fontWeight: 'bold', color: '#333' }}>Preview</h2>
+                </div>
                     <div>
                     <input
                         type="color"
@@ -265,8 +267,9 @@ const PlanningForm: React.FC<Props> = ({ onSavePlan, parentHeaderColor, parentCe
                             setHeaderTextColor(e.target.value);
                             setParentHeaderTextColor(e.target.value);
                         }}
+                        style={{width: "40px", height: "40px", padding: '2px' }}
                     />
-                    <label htmlFor="headerColor" className="form-label">
+                    <label htmlFor="headerColor" className="form-label" style={{padding: '4px'}}>
                         Select text color for header
                     </label>
                     </div>
@@ -280,8 +283,9 @@ const PlanningForm: React.FC<Props> = ({ onSavePlan, parentHeaderColor, parentCe
                             setHeaderBgColor(e.target.value);
                             setParentHeaderBgColor(e.target.value);
                         }}
+                        style={{width: "40px", height: "40px", padding: '2px' }}
                     />
-                    <label htmlFor="headerBgColor" className="form-label">
+                    <label htmlFor="headerBgColor" className="form-label" style={{padding: '4px'}}>
                         Select background color for header
                     </label>
                     </div>
@@ -295,8 +299,9 @@ const PlanningForm: React.FC<Props> = ({ onSavePlan, parentHeaderColor, parentCe
                             setCellTextColor(e.target.value)
                             setParentCellColor(e.target.value);
                         }}
+                        style={{width: "40px", height: "40px", padding: '2px' }}
                     />
-                    <label htmlFor="cellColor" className="form-label">
+                    <label htmlFor="cellColor" className="form-label" style={{padding: '4px'}}>
                         Select text color for cells
                     </label>
                     </div>
@@ -310,6 +315,7 @@ const PlanningForm: React.FC<Props> = ({ onSavePlan, parentHeaderColor, parentCe
                             setCellBgColor1(e.target.value);
                             setParentCellBgColor1(e.target.value);
                         }}
+                        style={{width: "40px", height: "40px", padding: '2px' }}
                     />
                     <input
                         type="color"
@@ -319,8 +325,9 @@ const PlanningForm: React.FC<Props> = ({ onSavePlan, parentHeaderColor, parentCe
                             setCellBgColor2(e.target.value);
                             setParentCellBgColor2(e.target.value);
                         }}
+                        style={{width: "40px", height: "40px", padding: '2px' }}
                     />
-                    <label htmlFor="cellBgColor" className="form-label">
+                    <label htmlFor="cellBgColor" className="form-label" style={{padding: '4px'}}>
                         Select background color for cells
                     </label>
                     </div>

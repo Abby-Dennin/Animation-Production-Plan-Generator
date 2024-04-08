@@ -129,7 +129,7 @@ const deletePlan = (index: number) => {
   return (
     <div className="container" style={{ display: 'flex', justifyContent: 'space-between'}}>
       <div style={{ flex: '1', padding: '20px' }}>
-        <h2 style={{color: '#ffffff'}}>My Plans</h2>
+        <h2 style={{color: '#ffffff', fontFamily: 'Arial Black', fontWeight: 'bold'}}>My Plans</h2>
               <ul  style={{color: '#ffffff'}}>
                 {savedPlans.map((plan, index) => (
                   <li key={index}>
@@ -155,7 +155,7 @@ const deletePlan = (index: number) => {
           <>
             {selectedPlan && showDetails && (
               <div>
-                <h3 style={{color: '#ffffff'}}>{selectedPlan.planName}</h3>
+                <h4 style={{color: '#ffffff', fontFamily: 'Arial Black', fontWeight: 'bold'}}>{selectedPlan.planName}</h4>
                 <table className="table" style={{ width: tableWidth ? `${tableWidth}px` : 'auto' }}>
                 <thead>
                   <tr>
