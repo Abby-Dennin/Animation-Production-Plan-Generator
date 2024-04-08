@@ -1,6 +1,6 @@
 import { FieldValues, useForm } from "react-hook-form";
 import { z } from "zod";
-import { useState } from "react";
+import { useState, useRef  } from "react";
 import {
     // Backend model route options
     createResponseService, // Default
@@ -80,7 +80,7 @@ const PlanningForm: React.FC<Props> = ({ onSavePlan, parentHeaderColor, parentCe
 
     const [headerBgColor, setHeaderBgColor] = useState("#000000");
 
-    const [savedPlans, setSavedPlans] = useState([]);
+    const bottomRef = useRef<HTMLDivElement>(null);
 
     const [planName, setPlanName] = useState(""); // State variable to store the plan name
 
@@ -153,6 +153,8 @@ const PlanningForm: React.FC<Props> = ({ onSavePlan, parentHeaderColor, parentCe
           tasks: emptyTasksArray,
         };
         onSavePlan(newPlan); // Call the onSavePlan prop to save the plan
+        setFormSubmitted(false);
+        bottomRef.current.scrollIntoView({ behavior: "smooth" });
       };
 
       const renderPreviewTable = () => {
@@ -340,6 +342,7 @@ const PlanningForm: React.FC<Props> = ({ onSavePlan, parentHeaderColor, parentCe
 
                     <div className="mw-45 p-2 col">
                         {isLoading && <div className="spinner-border"></div>}
+                        {formSubmitted && (
                         <table>
                             <thead>
                             <tr>
@@ -377,7 +380,7 @@ const PlanningForm: React.FC<Props> = ({ onSavePlan, parentHeaderColor, parentCe
                                     </tr>
                                 ))}
                             </tbody>
-                        </table>
+                        </table>)}
                     </div>
                     {formSubmitted && (
                     <div className="mw-45 p-2 col">

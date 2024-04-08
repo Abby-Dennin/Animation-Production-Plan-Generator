@@ -1,7 +1,7 @@
 // SavedPlans.tsx
 import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faCheckCircle } from "@fortawesome/free-solid-svg-icons";
 import { faTrashCan } from "@fortawesome/free-solid-svg-icons";
 
 interface SavedPlan {
@@ -24,6 +24,7 @@ const SavedPlans: React.FC<Props> = ({ savedPlans = [], setSavedPlans }) => {
   const [selectedPlan, setSelectedPlan] = useState<SavedPlan | null>(null);
   const [showDetails, setShowDetails] = useState(false);
   const [tableWidth, setTableWidth] = useState<number | null>(null);
+  const [progress, setProgress] = useState(0);
 
     useEffect(() => {
         const savedPlansData = localStorage.getItem("savedPlans");
@@ -40,6 +41,16 @@ const SavedPlans: React.FC<Props> = ({ savedPlans = [], setSavedPlans }) => {
         const totalColumnWidth = 700; // Assuming each column has a width of 100px
         setTableWidth(totalColumnWidth);
         }
+    }, [selectedPlan]);
+
+    useEffect(() => {
+      // Calculate percentage of completed tasks
+      if (selectedPlan) {
+        const completedTasks = selectedPlan.tasks.filter((task) => task).length;
+        const totalTasks = selectedPlan.tasks.length;
+        const percentage = (completedTasks / totalTasks) * 100;
+        setProgress(percentage);
+      }
     }, [selectedPlan]);
 
     // Function to toggle the completion status of a task
@@ -126,6 +137,10 @@ const deletePlan = (index: number) => {
     return (week % 2 === 0) ? selectedPlan.cellBgColor2 : selectedPlan.cellBgColor1;
   };
 
+  const getCompleted = (plan: SavedPlan) => {
+    return plan.tasks.every(task => task);
+  };
+
   return (
     <div className="container" style={{ display: 'flex', justifyContent: 'space-between'}}>
       <div style={{ flex: '1', padding: '20px' }}>
@@ -144,6 +159,9 @@ const deletePlan = (index: number) => {
                     > 
                        <FontAwesomeIcon icon={faTrashCan}  style={{ color: '#ffffff'}}/>
                     </button>
+                    {getCompleted(plan) && (
+                        <FontAwesomeIcon icon={faCheckCircle} style={{ color: 'white', padding:'10px' }} />
+                    )}
                   </li>
                 ))}
               </ul>
@@ -155,6 +173,21 @@ const deletePlan = (index: number) => {
           <>
             {selectedPlan && showDetails && (
               <div>
+                <div style={{paddingBottom:'20px'}}>
+                  Your Progress:
+                <div className="progress">
+                  <div
+                    className="progress-bar"
+                    role="progressbar"
+                    style={{ width: `${progress}%`, backgroundColor:'#ff9900'  }}
+                    aria-valuenow={progress}
+                    aria-valuemin={0}
+                    aria-valuemax={100}
+                  >
+                    {progress.toFixed(2)}%
+                    </div>
+                  </div>
+                </div>
                 <h4 style={{color: '#ffffff', fontFamily: 'Arial Black', fontWeight: 'bold'}}>{selectedPlan.planName}</h4>
                 <table className="table" style={{ width: tableWidth ? `${tableWidth}px` : 'auto' }}>
                 <thead>
