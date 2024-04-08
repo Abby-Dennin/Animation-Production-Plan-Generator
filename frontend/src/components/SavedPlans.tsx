@@ -139,9 +139,9 @@ const deletePlan = (index: number) => {
                 ))}
               </ul>
       </div>
-      <div style={{padding: '20px'}}>
+      <div style={{padding: '20px', color: '#ffffff'}}>
         {savedPlans.length === 0 ? (
-          <p>No saved plans available.</p>
+          <p>...no saved plans available.</p>
         ) : (
           <>
             {selectedPlan && showDetails && (
