@@ -182,7 +182,7 @@ const deletePlan = (index: number) => {
                   Export Spreadsheet
                 </button>
 
-                <div style={{paddingBottom:'20px', paddingTop:}}>
+                <div style={{paddingBottom:'20px', paddingTop:'20px'}}>
                   Your Progress:
                 <div className="progress">
                   <div
