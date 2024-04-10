@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheckCircle } from "@fortawesome/free-solid-svg-icons";
 import { faTrashCan } from "@fortawesome/free-solid-svg-icons";
+import "./style.css"; // Import the CSS file
 
 interface SavedPlan {
   planName: string;
@@ -144,12 +145,12 @@ const deletePlan = (index: number) => {
   return (
     <div className="container" style={{ display: 'flex', justifyContent: 'space-between'}}>
       <div style={{ flex: '1', padding: '20px' }}>
-        <h2 style={{color: '#ffffff', fontFamily: 'Arial Black', fontWeight: 'bold'}}>My Plans</h2>
+        <h2 style={{color: '#ffffff', fontFamily: "'Trebuchet MS', sans-serif", fontWeight: 'bold', }}>My Plans</h2>
               <ul  style={{color: '#ffffff'}}>
                 {savedPlans.map((plan, index) => (
                   <li key={index}>
                     {/* Render plan title as a button */}
-                    <button className="btn btn-primary mb-3" onClick={() => handleButtonClick(plan)} style={{ backgroundColor: '#ff9900', borderColor: '#c73c34' }}>
+                    <button className="btn btn-primary mb-3" onClick={() => handleButtonClick(plan)} style={{fontFamily: "'Trebuchet MS', sans-serif", fontSize: '20px', backgroundColor: '#e19d44', borderColor: '#e19d44' }}>
                       {plan.planName}
                     </button>
                     <button
@@ -168,50 +169,39 @@ const deletePlan = (index: number) => {
       </div>
       <div style={{padding: '20px', color: '#ffffff'}}>
         {savedPlans.length === 0 ? (
-          <p>...no saved plans available.</p>
+          <p style={{fontFamily: "'Trebuchet MS', sans-serif", fontSize: '20px'}}>...no saved plans available.</p>
         ) : (
           <>
             {selectedPlan && showDetails && (
-              <div>
-
-                <button
-                  className="btn btn-success"
-                  onClick={handleExportCSV}
-                  style={{ backgroundColor: '#ff9900', borderColor: '#c73c34'}}
-                >
-                  Export Spreadsheet
-                </button>
-
-                <div style={{paddingBottom:'20px', paddingTop:'20px'}}>
+              <div >
+                <div style={{fontFamily: "'Trebuchet MS', sans-serif", fontSize: '19px', paddingBottom:'40px', paddingTop:'40px'}}>
                   Your Progress:
                 <div className="progress">
                   <div
                     className="progress-bar"
                     role="progressbar"
-                    style={{ width: `${progress}%`, backgroundColor:'#ff9900'  }}
+                    style={{ width: `${progress}%`, backgroundColor:'#e19d44'  }}
                     aria-valuenow={progress}
                     aria-valuemin={0}
                     aria-valuemax={100}
                   >
-                    {progress.toFixed(2)}%
                     </div>
                   </div>
                 </div>
                 
+                <h4 style={{color: '#ffffff', fontFamily: "'Trebuchet MS', sans-serif", fontWeight: 'bold'}}>{selectedPlan.planName}</h4>
                 
-                <h4 style={{color: '#ffffff', fontFamily: 'Arial Black', fontWeight: 'bold'}}>{selectedPlan.planName}</h4>
-                
-                <table className="table" style={{ width: tableWidth ? `${tableWidth}px` : 'auto' }}>
-                <thead>
+                <table className="table" style={{ width: tableWidth ? `${tableWidth}px` : 'auto', borderRadius: '15px', overflow: 'hidden'}}>
+                <thead style={{fontFamily: "'Trebuchet MS', sans-serif", fontWeight: 'bold', fontSize: '18px'}}>
                   <tr>
-                      <th style={{ color: selectedPlan.headerTextColor, backgroundColor: selectedPlan.headerBgColor }}>Week</th>
-                      <th style={{ color: selectedPlan.headerTextColor, backgroundColor: selectedPlan.headerBgColor }}>Day</th>
-                      <th style={{ color: selectedPlan.headerTextColor, backgroundColor: selectedPlan.headerBgColor }}>Task</th>
-                      <th style={{ color: selectedPlan.headerTextColor, backgroundColor: selectedPlan.headerBgColor }}>Task Description</th>
-                      <th style={{ color: selectedPlan.headerTextColor, backgroundColor: selectedPlan.headerBgColor }}>Done</th> {/* Add "Done" column header */}
+                      <th style={{ color: selectedPlan.headerTextColor, backgroundColor: selectedPlan.headerBgColor,padding: '10px'}}>Week</th>
+                      <th style={{ color: selectedPlan.headerTextColor, backgroundColor: selectedPlan.headerBgColor,padding: '10px'}}>Day</th>
+                      <th style={{ color: selectedPlan.headerTextColor, backgroundColor: selectedPlan.headerBgColor,padding: '10px'}}>Task</th>
+                      <th style={{ color: selectedPlan.headerTextColor, backgroundColor: selectedPlan.headerBgColor,padding: '10px'}}>Task Description</th>
+                      <th style={{ color: selectedPlan.headerTextColor, backgroundColor: selectedPlan.headerBgColor,padding: '10px'}}>Done</th> {/* Add "Done" column header */}
                   </tr>
                   </thead>
-                  <tbody>
+                  <tbody style={{fontFamily: "'Trebuchet MS', sans-serif", fontSize: '18px', padding: '20px'}}>
                     {selectedPlan.data.slice(0).map((row, rowIndex) => (
                       <tr key={rowIndex}>
                         {row.map((cell, cellIndex) => (
@@ -230,7 +220,13 @@ const deletePlan = (index: number) => {
                     ))}
                   </tbody>
                 </table>
-                
+                <button
+                  className="btn btn-success"
+                  onClick={handleExportCSV}
+                  style={{fontFamily: "'Trebuchet MS', sans-serif", fontSize: '20px', backgroundColor: '#e19d44', borderColor: '#e19d44'}}
+                >
+                  Export Spreadsheet
+                </button>
               </div>
             )}
           </>

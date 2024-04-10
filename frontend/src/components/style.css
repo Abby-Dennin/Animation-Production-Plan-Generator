@@ -1,0 +1,35 @@
+.circular-progress-container {
+  position: relative;
+  width: 100px;
+  height: 100px;
+}
+
+.circular-progress-svg {
+  width: 100%;
+  height: 100%;
+}
+
+.circular-progress-background {
+  fill: none;
+  stroke: #eee; /* Change to the desired background color */
+  stroke-width: 4;
+}
+
+.circular-progress-bar {
+  fill: none;
+  stroke: #e19d44; /* Change to the desired progress color */
+  stroke-width: 4;
+  stroke-dasharray: 251;
+  stroke-dashoffset: 251;
+  transition: stroke-dashoffset 0.5s;
+}
+
+.progress-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  color: #333; /* Change to the desired text color */
+}
