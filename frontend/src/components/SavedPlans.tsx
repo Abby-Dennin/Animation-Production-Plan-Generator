@@ -31,21 +31,20 @@ const SavedPlans: React.FC<Props> = ({ savedPlans = [], setSavedPlans }) => {
         const savedPlansData = localStorage.getItem("savedPlans");
         if (savedPlansData) {
         const parsedSavedPlans: SavedPlan[] = JSON.parse(savedPlansData);
-        // Update the state with the saved plans
+        // sets the selected plan
         setSelectedPlan(parsedSavedPlans.find(plan => plan.planName === selectedPlan?.planName) || null);
         }
     }, []);
 
     useEffect(() => {
         if (selectedPlan) {
-        console.log("Use Effect Task statuses:", selectedPlan.tasks);
         const totalColumnWidth = 700; // Assuming each column has a width of 100px
         setTableWidth(totalColumnWidth);
         }
     }, [selectedPlan]);
 
     useEffect(() => {
-      // Calculate percentage of completed tasks
+      // calculate percentage of completed tasks to update progress bar
       if (selectedPlan) {
         const completedTasks = selectedPlan.tasks.filter((task) => task).length;
         const totalTasks = selectedPlan.tasks.length;
@@ -54,9 +53,8 @@ const SavedPlans: React.FC<Props> = ({ savedPlans = [], setSavedPlans }) => {
       }
     }, [selectedPlan]);
 
-    // Function to toggle the completion status of a task
+    // function to toggle the completion status of a task
     const toggleTask = (index: number) => {
-
         const planToUpdate = savedPlans.find(plan => plan.planName === selectedPlan.planName);
         const updatedTasks = [...selectedPlan.tasks];
         updatedTasks[index] = !updatedTasks[index];
@@ -65,8 +63,8 @@ const SavedPlans: React.FC<Props> = ({ savedPlans = [], setSavedPlans }) => {
         localStorage.setItem("savedPlans", JSON.stringify(savedPlans));
       };
 
+  // handles click of a saved plan - sets selected plan
   const handleButtonClick = (plan: SavedPlan) => {
-    console.log("Task statuses:", plan.tasks);
     if (selectedPlan && selectedPlan.planName === plan.planName) {
       setShowDetails(!showDetails); // Toggle showDetails
     } else {
@@ -75,9 +73,10 @@ const SavedPlans: React.FC<Props> = ({ savedPlans = [], setSavedPlans }) => {
     }
   };
 
+  // function to currently selected plan as csv
   const handleExportCSV = () => {
     const csvRows = [];
-    // Add header row
+    // header rows
     const headerRow = [
         "Week",
         "Day",
@@ -87,18 +86,16 @@ const SavedPlans: React.FC<Props> = ({ savedPlans = [], setSavedPlans }) => {
     ].map(cell => `"${cell}"`).join(",");
     csvRows.push(headerRow);
 
-    // Add data rows
+    // body rows
     selectedPlan.data.forEach((row, rowIndex) => {
         const csvRow = row.map(cell => `"${cell}"`).join(",");
-        const taskStatus = selectedPlan.tasks[rowIndex] ? "Yes" : "No"; // Convert task status to "Yes" or "No"
-        const csvRowWithStatus = `${csvRow},"${taskStatus}"`; // Append task status to the row
+        const taskStatus = selectedPlan.tasks[rowIndex] ? "Yes" : "No"; 
+        const csvRowWithStatus = `${csvRow},"${taskStatus}"`;
         csvRows.push(csvRowWithStatus);
     });
 
-    // Combine rows into CSV content
     const csvContent = csvRows.join("\n");
 
-    // Download CSV file
     const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
     const link = document.createElement("a");
     if (link.download !== undefined) {
@@ -113,7 +110,7 @@ const SavedPlans: React.FC<Props> = ({ savedPlans = [], setSavedPlans }) => {
     }
 };
 
-
+// function to delete plan
 const deletePlan = (index: number) => {
     console.log("size: ", savedPlans.length);
     const updatedPlans = [...savedPlans];
@@ -130,6 +127,7 @@ const deletePlan = (index: number) => {
     }
   };
 
+  // gets alternate week background color
   const getCellBgColor2 = (rowValues:string[]) => {
     console.log("cellBgColor1: ", cellBgColor1);
     console.log("cellBgColor2: ", cellBgColor2);
@@ -138,6 +136,7 @@ const deletePlan = (index: number) => {
     return (week % 2 === 0) ? selectedPlan.cellBgColor2 : selectedPlan.cellBgColor1;
   };
 
+  // gets whether every task of a plan is completed
   const getCompleted = (plan: SavedPlan) => {
     return plan.tasks.every(task => task);
   };
@@ -145,14 +144,16 @@ const deletePlan = (index: number) => {
   return (
     <div className="container" style={{ display: 'flex', justifyContent: 'space-between'}}>
       <div style={{ flex: '1', padding: '20px' }}>
+        {/* render list of saved plans*/}
         <h2 style={{color: '#ffffff', fontFamily: "'Trebuchet MS', sans-serif", fontWeight: 'bold', }}>My Plans</h2>
               <ul  style={{color: '#ffffff'}}>
                 {savedPlans.map((plan, index) => (
                   <li key={index}>
-                    {/* Render plan title as a button */}
+                    {/* renders plan title as a button */}
                     <button className="btn btn-primary mb-3" onClick={() => handleButtonClick(plan)} style={{fontFamily: "'Trebuchet MS', sans-serif", fontSize: '20px', backgroundColor: '#e19d44', borderColor: '#e19d44' }}>
                       {plan.planName}
                     </button>
+                    {/* delete plan button */}
                     <button
                       className="btn btn-danger mb-3 ms-2"
                       onClick={() => deletePlan(index)}
@@ -160,6 +161,8 @@ const deletePlan = (index: number) => {
                     > 
                        <FontAwesomeIcon icon={faTrashCan}  style={{ color: '#ffffff'}}/>
                     </button>
+
+                    {/* icon to show whether all tasks in plan completed*/}
                     {getCompleted(plan) && (
                         <FontAwesomeIcon icon={faCheckCircle} style={{ color: 'white', padding:'10px' }} />
                     )}
@@ -169,11 +172,14 @@ const deletePlan = (index: number) => {
       </div>
       <div style={{padding: '20px', color: '#ffffff'}}>
         {savedPlans.length === 0 ? (
+          {/* if no plans currently saved */}
           <p style={{fontFamily: "'Trebuchet MS', sans-serif", fontSize: '20px'}}>...no saved plans available.</p>
         ) : (
           <>
+            {/* show selected plan if a saved plan has been selected */}
             {selectedPlan && showDetails && (
               <div >
+                {/* render progress bar */}
                 <div style={{fontFamily: "'Trebuchet MS', sans-serif", fontSize: '19px', paddingBottom:'40px', paddingTop:'40px'}}>
                   Your Progress:
                 <div className="progress">
@@ -191,6 +197,7 @@ const deletePlan = (index: number) => {
                 
                 <h4 style={{color: '#ffffff', fontFamily: "'Trebuchet MS', sans-serif", fontWeight: 'bold'}}>{selectedPlan.planName}</h4>
                 
+                {/* render production plan in table */}
                 <table className="table" style={{ width: tableWidth ? `${tableWidth}px` : 'auto', borderRadius: '15px', overflow: 'hidden'}}>
                 <thead style={{fontFamily: "'Trebuchet MS', sans-serif", fontWeight: 'bold', fontSize: '18px'}}>
                   <tr>
@@ -220,6 +227,8 @@ const deletePlan = (index: number) => {
                     ))}
                   </tbody>
                 </table>
+
+                {/* button to export spreadsheet */}
                 <button
                   className="btn btn-success"
                   onClick={handleExportCSV}

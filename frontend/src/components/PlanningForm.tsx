@@ -30,6 +30,7 @@ const schema = z.object({
 });
 type FormData = z.infer<typeof schema>;
 
+// input to give to produce ai generated response
 const formatString = (
     planName: string,
     startDate: string,
@@ -70,16 +71,22 @@ const PlanningForm: React.FC<Props> = ({ onSavePlan, parentHeaderColor, parentCe
     // has form been submitted (default is false when application launched)
     const [formSubmitted, setFormSubmitted] = useState(false);
 
+    // default header text color
     const [headerTextColor, setHeaderTextColor] = useState("#ffffff");
 
+    // default cell text color
     const [cellTextColor, setCellTextColor] = useState("#000000");
 
+    // default cell bg color 1 (to alternate background color between weeks)
     const [cellBgColor1, setCellBgColor1] = useState("#ffffff");
 
+    // default cell text color 2 (to alternate background color between weeks)
     const [cellBgColor2, setCellBgColor2] = useState("#adadad");
 
+    // default header bg color
     const [headerBgColor, setHeaderBgColor] = useState("#000000");
 
+    // refer to bottom of page
     const bottomRef = useRef<HTMLDivElement>(null);
 
     const [planName, setPlanName] = useState(""); // State variable to store the plan name
@@ -152,11 +159,12 @@ const PlanningForm: React.FC<Props> = ({ onSavePlan, parentHeaderColor, parentCe
           cellBgColor2: cellBgColor2,
           tasks: emptyTasksArray,
         };
-        onSavePlan(newPlan); // Call the onSavePlan prop to save the plan
+        onSavePlan(newPlan); // call the onSavePlan to move to SavedPlans component
         setFormSubmitted(false);
-        bottomRef.current.scrollIntoView({ behavior: "smooth" });
+        bottomRef.current.scrollIntoView({ behavior: "smooth" }); // scroll to bottom to show user newly created plan
       };
 
+      // renders an example table for the user to refer to
       const renderPreviewTable = () => {
         // Example default values
         const defaultTableRows = ["Week", "Day", "Task", "Task Description","Done"];
@@ -199,6 +207,8 @@ const PlanningForm: React.FC<Props> = ({ onSavePlan, parentHeaderColor, parentCe
         );
       };
     
+
+    // alternates background color depending on week
     const getCellBgColor = (rowValues:string[]) => {
         const week = parseInt(rowValues[0], 10); 
 
@@ -209,6 +219,7 @@ const PlanningForm: React.FC<Props> = ({ onSavePlan, parentHeaderColor, parentCe
         <div className="container">
             <div className="row">  
                 <div className="mw-45 col p-2 " style={{margin: '40px'}}>
+                    {/* render form */}
                     <form onSubmit={handleSubmit(onSubmit)}>
                         {error && <p className="text-danger">{error}</p>}
                         <h1 style={{ fontFamily: "'Trebuchet MS', sans-serif", fontWeight: 'bold', color: '#c73c34' }}>Send us your project goals, and we'll do the rest! 😎</h1>
@@ -257,7 +268,7 @@ const PlanningForm: React.FC<Props> = ({ onSavePlan, parentHeaderColor, parentCe
                     </form>
                 </div>
 
-
+                {/* shows options box to choose colors */}
                 <div className="mw-45 p-2 col" style={{backgroundColor: "#ebebeb",borderRadius: '15px', overflow: 'hidden'}}>
                 <div style={{paddingBottom: '3px' }}>
                     <h3 style={{ fontFamily: "'Trebuchet MS', sans-serif", fontWeight: 'bold', color: '#333'}}>Preview</h3>
@@ -336,12 +347,14 @@ const PlanningForm: React.FC<Props> = ({ onSavePlan, parentHeaderColor, parentCe
                     </label>
                     </div>
 
+                    {/* preview table rendered only if no plan has been generated yet */}
                     {!formSubmitted && (
                         <div className="mw-45 p-2 col">
                         {renderPreviewTable()}
                         </div>
                     )}
 
+                    {/* render table generated from form input */}
                     <div className="mw-45 p-2 col">
                         {isLoading && <div className="spinner-border"></div>}
                         {formSubmitted && (
@@ -384,9 +397,10 @@ const PlanningForm: React.FC<Props> = ({ onSavePlan, parentHeaderColor, parentCe
                             </tbody>
                         </table>)}
                     </div>
+
+                    {/* renders button to save plan */}
                     {formSubmitted && (
                     <div className="mw-45 p-2 col">
-                        {/* Render the table and save plan button */}
                         <button className="btn btn-primary" onClick={handleSavePlan} style={{fontFamily: "'Trebuchet MS', sans-serif", fontSize: '20px', backgroundColor: '#c73c34', borderColor: '#ff9900' }}>
                         SAVE PLAN
                         </button>

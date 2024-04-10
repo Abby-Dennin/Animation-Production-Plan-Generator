@@ -1,9 +1,9 @@
-// ParentComponent.tsx
 import React, { useState, useEffect } from "react";
 import PlanningForm from "./PlanningForm";
 import SavedPlans from "./SavedPlans";
 import logoImage from "../PPG Logo.png";
 
+// main component that holds page structure - consists of component 'PlanningForm' and 'SavedPlans'
 const ParentComponent = () => {
   const [savedPlans, setSavedPlans] = useState<any[]>([]);
   const [headerTextColor, setParentHeaderTextColor] = useState("#ffffff");
