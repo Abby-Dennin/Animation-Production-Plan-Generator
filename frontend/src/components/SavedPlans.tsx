@@ -3,7 +3,6 @@ import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheckCircle } from "@fortawesome/free-solid-svg-icons";
 import { faTrashCan } from "@fortawesome/free-solid-svg-icons";
-import "./style.css"; // Import the CSS file
 
 interface SavedPlan {
   planName: string;
@@ -172,8 +171,7 @@ const deletePlan = (index: number) => {
       </div>
       <div style={{padding: '20px', color: '#ffffff'}}>
         {savedPlans.length === 0 ? (
-          {/* if no plans currently saved */}
-          <p style={{fontFamily: "'Trebuchet MS', sans-serif", fontSize: '20px'}}>...no saved plans available.</p>
+          <p style={{fontFamily: "'Trebuchet MS', sans-serif", fontSize: '20px'}} >...no saved plans available.</p>
         ) : (
           <>
             {/* show selected plan if a saved plan has been selected */}
