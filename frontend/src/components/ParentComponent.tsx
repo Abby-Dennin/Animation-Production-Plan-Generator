@@ -1,9 +1,9 @@
-// ParentComponent.tsx
 import React, { useState, useEffect } from "react";
 import PlanningForm from "./PlanningForm";
 import SavedPlans from "./SavedPlans";
 import logoImage from "../PPG Logo.png";
 
+// main component that holds page structure - consists of component 'PlanningForm' and 'SavedPlans'
 const ParentComponent = () => {
   const [savedPlans, setSavedPlans] = useState<any[]>([]);
   const [headerTextColor, setParentHeaderTextColor] = useState("#ffffff");
@@ -30,7 +30,7 @@ const ParentComponent = () => {
 
   return (
     <div>
-        <img src={logoImage} alt="Logo" style={{ width: "100%", marginBottom: "20px" }} />
+        <img src={logoImage} alt="Logo" style={{ width: "100%", marginBottom: "20px"}} />
       <PlanningForm
         onSavePlan={onSavePlan}
         parentHeaderColor={headerTextColor}
@@ -40,8 +40,10 @@ const ParentComponent = () => {
         setHeaderBgColor={setParentHeaderBgColor}
         setCellBgColor1={setParentCellBgColor1}
         setCellBgColor2={setParentCellBgColor2}
+        style={{padding: '20px'}}
       />
-      <div style={{backgroundColor:'#b42e27' }}>
+      <div><br></br></div>
+      <div style={{backgroundColor:'#c73d32',padding: '20px'}}>
         <SavedPlans savedPlans={savedPlans} setSavedPlans={setSavedPlans}/>
       </div>
     </div>
