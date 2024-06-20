@@ -1,6 +1,9 @@
 # HCI-Final-Project
  A form to give generative ai information to help you buiild an animation production plan
 
+# Demo 
+https://www.youtube.com/watch?v=sXNImUJs3qY
+
 # How To Run
 
 NOTE: Make sure you insert your openAI API key in server/openaiService.js
