@@ -1,5 +1,5 @@
 # HCI-Final-Project
- A form to give generative ai information to help you buiild an animation production plan
+ A form to give generative ai information to help you build an animation production plan
 
 # Demo 
 https://www.youtube.com/watch?v=sXNImUJs3qY
@@ -15,3 +15,10 @@ Enter the server folder, and run `npm install -g nodemon`
 First run the server with `nodemon index.js` from the server folder.
 
 Then run the frontend with `npm run dev` from the frontend folder.
+
+## Screenshots of Application
+
+* ![Image of Key](https://github.com/Abby-Dennin/Animation-Production-Plan-Generator/blob/main/screenshots/ss1.png)
+* ![Image of Key](https://github.com/Abby-Dennin/Animation-Production-Plan-Generator/blob/main/screenshots/ss2.png)
+* ![Image of Key](https://github.com/Abby-Dennin/Animation-Production-Plan-Generator/blob/main/screenshots/ss3.png)
+* ![Image of Key](https://github.com/Abby-Dennin/Animation-Production-Plan-Generator/blob/main/screenshots/ss4.png)
