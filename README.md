@@ -1,5 +1,5 @@
 # HCI-Final-Project
- A form to give generative ai information to help you build an animation production plan
+A form to give generative AI information to help you build an animation production plan, manage task completion and track production progress
 
 # Demo 
 https://www.youtube.com/watch?v=sXNImUJs3qY
